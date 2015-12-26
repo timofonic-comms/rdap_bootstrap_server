@@ -254,3 +254,7 @@ to try to keep the scheme (HTTP or HTTPS) for the redirect that was given in the
 behavior can be set with the system property `arin.rdapbootstrap.match_scheme_on_redirect=TRUE`.
 Note that this is a system property and is not part of the `resouce_files.properties` file.
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/LACNIC/rdap_bootstrap_server/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
