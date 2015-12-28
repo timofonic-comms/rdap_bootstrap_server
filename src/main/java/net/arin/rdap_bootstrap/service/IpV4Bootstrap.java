@@ -27,76 +27,96 @@ import net.ripe.ipresource.UniqueIpResource;
 /**
  * @version $Rev$, $Date$
  */
-public class IpV4Bootstrap implements JsonBootstrapFile.Handler {
+public class IpV4Bootstrap implements JsonBootstrapFile.Handler
+{
 	private volatile HashMap<String, ServiceUrls> allocations = new HashMap<String, ServiceUrls>();
-	private HashMap<String, ServiceUrls> _allocations; 
+	private HashMap<String, ServiceUrls> _allocations;
 
 	private ServiceUrls serviceUrls;
 	private String publication;
 	private String description;
 
-	public void loadData(ResourceFiles resourceFiles) throws Exception {
+	public void loadData(ResourceFiles resourceFiles) throws Exception
+	{
 		JsonBootstrapFile bsFile = new JsonBootstrapFile();
-		bsFile.loadData(resourceFiles.getInputStream(BootFiles.V4.getKey()), this);
+		bsFile.loadData(resourceFiles.getInputStream(BootFiles.V4.getKey()),
+				this);
 	}
 
 	@Override
-	public void startServices() {
+	public void startServices()
+	{
 		_allocations = new HashMap<String, ServiceUrls>();
 	}
 
 	@Override
-	public void endServices() {
+	public void endServices()
+	{
 		allocations = _allocations;
 	}
 
 	@Override
-	public void startService() {
+	public void startService()
+	{
 		serviceUrls = new ServiceUrls();
 	}
 
 	@Override
-	public void endService() {
+	public void endService()
+	{
 		// nothing to do
 	}
 
 	@Override
-	public void addServiceEntry(String entry) {
+	public void addServiceEntry(String entry)
+	{
 		_allocations.put(entry, serviceUrls);
 	}
 
 	@Override
-	public void addServiceUrl(String url) {
+	public void addServiceUrl(String url)
+	{
 		serviceUrls.addUrl(url);
 	}
 
-	public ServiceUrls getServiceUrls(String prefix) {
-		
+	public ServiceUrls getServiceUrls(String prefix)
+	{
+
 		UniqueIpResource start;
-		
-		if(!prefix.contains("/") && prefix.contains(".")) {
+
+		if (!prefix.contains("/") && prefix.contains("."))
+		{
+
 			// single host
 			start = UniqueIpResource.parse(prefix);
-		} else if (!prefix.contains("/")) {
+		} else if (!prefix.contains("/"))
+		{
 			// /8 single int behaviour
-			try {
+			try
+			{
 				new Integer(prefix);
 				start = IpRange.parse(prefix + ".0.0.0/8").getStart();
-			} catch (NumberFormatException e) {
+			} catch (NumberFormatException e)
+			{
 				// network
 				start = IpRange.parse(prefix).getStart();
 			}
-		} else {
+		} else
+		{
 			// network
 			start = IpRange.parse(prefix).getStart();
 		}
-		
+
 		ServiceUrls resultUrl = null;
 		IpRange resultNetwork = IpRange.parse("0.0.0.0/0");
 		final Set<String> keys = allocations.keySet();
-		for (String key : keys) {
+		for (String key : keys)
+		{
 			final IpRange network = IpRange.parse(key);
-			if(network.contains(start) && (resultNetwork.getPrefixLength() < network.getPrefixLength())) {
+			if (network.contains(start)
+					&& (resultNetwork.getPrefixLength() < network
+							.getPrefixLength()))
+			{
 				resultNetwork = network;
 				resultUrl = allocations.get(key);
 			}
@@ -105,20 +125,24 @@ public class IpV4Bootstrap implements JsonBootstrapFile.Handler {
 	}
 
 	@Override
-	public void setPublication(String publication) {
+	public void setPublication(String publication)
+	{
 		this.publication = publication;
 	}
 
-	public String getPublication() {
+	public String getPublication()
+	{
 		return publication;
 	}
 
-	public String getDescription() {
+	public String getDescription()
+	{
 		return description;
 	}
 
 	@Override
-	public void setDescription(String description) {
+	public void setDescription(String description)
+	{
 		this.description = description;
 	}
 }
