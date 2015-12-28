@@ -29,120 +29,120 @@ import net.ripe.ipresource.UniqueIpResource;
  */
 public class IpV4Bootstrap implements JsonBootstrapFile.Handler
 {
-	private volatile HashMap<String, ServiceUrls> allocations = new HashMap<String, ServiceUrls>();
-	private HashMap<String, ServiceUrls> _allocations;
+    private volatile HashMap<String, ServiceUrls> allocations = new HashMap<String, ServiceUrls>();
+    private HashMap<String, ServiceUrls> _allocations;
 
-	private ServiceUrls serviceUrls;
-	private String publication;
-	private String description;
+    private ServiceUrls serviceUrls;
+    private String publication;
+    private String description;
 
-	public void loadData(ResourceFiles resourceFiles) throws Exception
-	{
-		JsonBootstrapFile bsFile = new JsonBootstrapFile();
-		bsFile.loadData(resourceFiles.getInputStream(BootFiles.V4.getKey()),
-				this);
-	}
+    public void loadData( ResourceFiles resourceFiles ) throws Exception
+    {
+        JsonBootstrapFile bsFile = new JsonBootstrapFile();
+        bsFile.loadData( resourceFiles.getInputStream( BootFiles.V4.getKey() ), this );
+    }
 
-	@Override
-	public void startServices()
-	{
-		_allocations = new HashMap<String, ServiceUrls>();
-	}
+    @Override
+    public void startServices()
+    {
+        _allocations = new HashMap<String, ServiceUrls>();
+    }
 
-	@Override
-	public void endServices()
-	{
-		allocations = _allocations;
-	}
+    @Override
+    public void endServices()
+    {
+        allocations = _allocations;
+    }
 
-	@Override
-	public void startService()
-	{
-		serviceUrls = new ServiceUrls();
-	}
+    @Override
+    public void startService()
+    {
+        serviceUrls = new ServiceUrls();
+    }
 
-	@Override
-	public void endService()
-	{
-		// nothing to do
-	}
+    @Override
+    public void endService()
+    {
+        // nothing to do
+    }
 
-	@Override
-	public void addServiceEntry(String entry)
-	{
-		_allocations.put(entry, serviceUrls);
-	}
+    @Override
+    public void addServiceEntry( String entry )
+    {
+        _allocations.put( entry, serviceUrls );
+    }
 
-	@Override
-	public void addServiceUrl(String url)
-	{
-		serviceUrls.addUrl(url);
-	}
+    @Override
+    public void addServiceUrl( String url )
+    {
+        serviceUrls.addUrl( url );
+    }
 
-	public ServiceUrls getServiceUrls(String prefix)
-	{
+    public ServiceUrls getServiceUrls( String prefix )
+    {
 
-		UniqueIpResource start;
+        UniqueIpResource start;
 
-		if (!prefix.contains("/") && prefix.contains("."))
-		{
+        if ( !prefix.contains( "/" ) && prefix.contains( "." ) )
+        {
+            // single host
+            start = UniqueIpResource.parse( prefix );
+        }
+        else if ( !prefix.contains( "/" ) )
+        {
+            // /8 single int behaviour
+            try
+            {
+                new Integer( prefix );
+                start = IpRange.parse( prefix + ".0.0.0/8" ).getStart();
+            }
+            catch ( NumberFormatException e )
+            {
+                // network
+                start = IpRange.parse( prefix ).getStart();
+            }
+        }
+        else
+        {
+            // network
+            start = IpRange.parse( prefix ).getStart();
+        }
 
-			// single host
-			start = UniqueIpResource.parse(prefix);
-		} else if (!prefix.contains("/"))
-		{
-			// /8 single int behaviour
-			try
-			{
-				new Integer(prefix);
-				start = IpRange.parse(prefix + ".0.0.0/8").getStart();
-			} catch (NumberFormatException e)
-			{
-				// network
-				start = IpRange.parse(prefix).getStart();
-			}
-		} else
-		{
-			// network
-			start = IpRange.parse(prefix).getStart();
-		}
+        ServiceUrls resultUrl = null;
+        IpRange resultNetwork = IpRange.parse( "0.0.0.0/0" );
+        final Set<String> keys = allocations.keySet();
+        for ( String key : keys )
+        {
+            final IpRange network = IpRange.parse( key );
+            if ( network.contains( start ) && ( resultNetwork.getPrefixLength() < network
+                .getPrefixLength() ) )
+            {
+                resultNetwork = network;
+                resultUrl = allocations.get( key );
+            }
+        }
+        return resultUrl;
+    }
 
-		ServiceUrls resultUrl = null;
-		IpRange resultNetwork = IpRange.parse("0.0.0.0/0");
-		final Set<String> keys = allocations.keySet();
-		for (String key : keys)
-		{
-			final IpRange network = IpRange.parse(key);
-			if (network.contains(start)
-					&& (resultNetwork.getPrefixLength() < network
-							.getPrefixLength()))
-			{
-				resultNetwork = network;
-				resultUrl = allocations.get(key);
-			}
-		}
-		return resultUrl;
-	}
+    @Override
+    public void setPublication( String publication )
+    {
+        this.publication = publication;
+    }
 
-	@Override
-	public void setPublication(String publication)
-	{
-		this.publication = publication;
-	}
+    public String getPublication()
+    {
+        return publication;
+    }
 
-	public String getPublication()
-	{
-		return publication;
-	}
+    public String getDescription()
+    {
+        return description;
+    }
 
-	public String getDescription()
-	{
-		return description;
-	}
-
-	@Override
-	public void setDescription(String description)
-	{
-		this.description = description;
-	}
+    @Override
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
 }
