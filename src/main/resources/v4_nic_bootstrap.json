@@ -1,0 +1,15 @@
+{
+  "publication": "2015-08-11T00:09:31Z",
+  "services": [
+    [
+      [
+        "200.160.0.1/32"
+      ],
+      [
+        "https://rdap.registro.br",
+        "http://rdap.registro.br"
+      ]
+    ]
+  ],
+  "version": "1.0"
+}

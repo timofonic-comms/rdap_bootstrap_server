@@ -1,5 +1,8 @@
 .gradle
+.project
+bin
 build
 target
 *.idea
 *.iml
+*.settings

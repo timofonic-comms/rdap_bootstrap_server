@@ -82,6 +82,8 @@ an example of a properties file pointed to by `arin.rdapbootstrap.resource_files
     v6_bootstrap = /v6_bootstrap.json
     entity_bootstrap = /entity_bootstrap.json
 
+Also, keys matching `v4_*_bootstrap` or `v6_*_bootstrap` will be considered as entries for IPv4 and IPv6 resources respectively and will have their content merged with the v4_bootstrap and the v6_bootstrap json files. For example, the key `v4_nir_bootstrap` matches the `v4_*_bootstrap` wildcard pattern and will have its content merged with the content in `v4_bootstrap` (and any other matching key as well).
+
 The system properties directly listing these are the keys of the properties file prefixed with
 `arin.rdapbootstrap.bootfile.`. So the AS bootstrap would be `arin.rdapbootstrap.bootfile.as_bootstrap`, etc...
 
@@ -190,8 +192,8 @@ entity bootstrap file:
           "LACNIC"
         ],
         [
-          "https://rdap.labs.lacnic.net/rdap/",
-          "http://rdap.labs.lacnic.net/rdap/"
+          "https://rdap.lacnic.net/rdap/",
+          "http://rdap.lacnic.net/rdap/"
         ]
       ]
     ]
