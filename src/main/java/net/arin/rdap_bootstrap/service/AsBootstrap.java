@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2015 American Registry for Internet Numbers (ARIN)
+ * Copyright (C) 2013-2016 American Registry for Internet Numbers (ARIN)
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -16,7 +16,7 @@
  */
 package net.arin.rdap_bootstrap.service;
 
-import net.arin.rdap_bootstrap.service.JsonBootstrapFile.ServiceUrls;
+import net.arin.rdap_bootstrap.service.Bootstrap.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 
 import java.util.Map;
@@ -60,7 +60,7 @@ public class AsBootstrap implements JsonBootstrapFile.Handler
     private volatile TreeMap<Long,AsRangeInfo> allocations = new TreeMap<Long, AsRangeInfo>(  );
     private TreeMap<Long,AsRangeInfo> _allocations;
 
-    private JsonBootstrapFile.ServiceUrls serviceUrls;
+    private Bootstrap.ServiceUrls serviceUrls;
     private String publication;
     private String description;
 
@@ -117,7 +117,7 @@ public class AsBootstrap implements JsonBootstrapFile.Handler
     public void loadData( ResourceFiles resourceFiles )
         throws Exception
     {
-        JsonBootstrapFile bsFile = new JsonBootstrapFile();
+        Bootstrap bsFile = new JsonBootstrapFile();
         bsFile.loadData( resourceFiles.getInputStream( BootFiles.AS.getKey() ), this );
     }
 

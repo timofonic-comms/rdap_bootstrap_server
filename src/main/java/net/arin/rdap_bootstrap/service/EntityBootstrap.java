@@ -16,7 +16,7 @@
  */
 package net.arin.rdap_bootstrap.service;
 
-import net.arin.rdap_bootstrap.service.JsonBootstrapFile.ServiceUrls;
+import net.arin.rdap_bootstrap.service.Bootstrap.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 
 import java.util.HashMap;
@@ -36,7 +36,7 @@ public class EntityBootstrap implements JsonBootstrapFile.Handler
     public void loadData( ResourceFiles resourceFiles )
         throws Exception
     {
-        JsonBootstrapFile bsFile = new JsonBootstrapFile();
+        Bootstrap bsFile = new JsonBootstrapFile();
         bsFile.loadData( resourceFiles.getInputStream( BootFiles.ENTITY.getKey() ), this );
     }
 

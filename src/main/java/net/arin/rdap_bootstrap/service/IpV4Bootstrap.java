@@ -19,7 +19,7 @@ package net.arin.rdap_bootstrap.service;
 import java.util.HashMap;
 import java.util.Set;
 
-import net.arin.rdap_bootstrap.service.JsonBootstrapFile.ServiceUrls;
+import net.arin.rdap_bootstrap.service.Bootstrap.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 import net.ripe.ipresource.IpRange;
 import net.ripe.ipresource.UniqueIpResource;
@@ -38,7 +38,7 @@ public class IpV4Bootstrap implements JsonBootstrapFile.Handler
 
     public void loadData( ResourceFiles resourceFiles ) throws Exception
     {
-        JsonBootstrapFile bsFile = new JsonBootstrapFile();
+        Bootstrap bsFile = new JsonBootstrapFile();
         bsFile.loadData( resourceFiles.getInputStream( BootFiles.V4.getKey() ), this );
     }
 

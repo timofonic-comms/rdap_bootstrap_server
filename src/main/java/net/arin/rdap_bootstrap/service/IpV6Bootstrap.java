@@ -19,7 +19,7 @@ package net.arin.rdap_bootstrap.service;
 import java.util.Map;
 import java.util.TreeMap;
 
-import net.arin.rdap_bootstrap.service.JsonBootstrapFile.ServiceUrls;
+import net.arin.rdap_bootstrap.service.Bootstrap.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 
 import com.googlecode.ipv6.IPv6Address;
@@ -78,7 +78,7 @@ public class IpV6Bootstrap implements JsonBootstrapFile.Handler
     public void loadData( ResourceFiles resourceFiles )
         throws Exception
     {
-        JsonBootstrapFile bsFile = new JsonBootstrapFile();
+        Bootstrap bsFile = new JsonBootstrapFile();
         bsFile.loadData( resourceFiles.getInputStream( BootFiles.V6.getKey() ), this );
     }
 
