@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013,2015 American Registry for Internet Numbers (ARIN)
+ * Copyright (C) 2013-2016 American Registry for Internet Numbers (ARIN)
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -32,19 +32,19 @@ public class AsBootstrapTest
         AsBootstrap asBootstrap = new AsBootstrap();
         asBootstrap.loadData( new ResourceFiles() );
 
-        assertEquals( "http://rdap.arin.net/registry", asBootstrap.getServiceUrls( "1" ).getHttpUrl() );
-        assertEquals( "http://rdap.arin.net/registry", asBootstrap.getServiceUrls( "2" ).getHttpUrl() );
-        assertEquals( "https://rdap.db.ripe.net", asBootstrap.getServiceUrls( "7" ).getHttpsUrl() );
-        assertEquals( "https://rdap.apnic.net", asBootstrap.getServiceUrls( "173" ).getHttpsUrl() );
-        assertEquals( "https://rdap.db.ripe.net", asBootstrap.getServiceUrls( "7" ).getHttpsUrl() );
-        assertEquals( "https://rdap.db.ripe.net", asBootstrap.getServiceUrls( "248" ).getHttpsUrl() );
-        assertEquals( "https://rdap.db.ripe.net", asBootstrap.getServiceUrls( "251" ).getHttpsUrl() );
-        assertEquals( "https://rdap.lacnic.net/rdap", asBootstrap.getServiceUrls( "11450" ).getHttpsUrl() );
-        assertEquals( "https://rdap.lacnic.net/rdap", asBootstrap.getServiceUrls( "11451" ).getHttpsUrl() );
-        assertEquals( "http://rdap.afrinic.net/rdap", asBootstrap.getServiceUrls( "11569" ).getHttpUrl() );
-        assertEquals( "https://rdap.apnic.net", asBootstrap.getServiceUrls( "17408" ).getHttpsUrl() );
-        assertEquals( "https://rdap.apnic.net", asBootstrap.getServiceUrls( "18431" ).getHttpsUrl() );
-        assertNull( asBootstrap.getServiceUrls( "4294967294" ) );
+        assertEquals( "http://rdap.arin.net/registry", asBootstrap.getServiceUrlsForAs( "1" ).getHttpUrl() );
+        assertEquals( "http://rdap.arin.net/registry", asBootstrap.getServiceUrlsForAs( "2" ).getHttpUrl() );
+        assertEquals( "https://rdap.db.ripe.net", asBootstrap.getServiceUrlsForAs( "7" ).getHttpsUrl() );
+        assertEquals( "https://rdap.apnic.net", asBootstrap.getServiceUrlsForAs( "173" ).getHttpsUrl() );
+        assertEquals( "https://rdap.db.ripe.net", asBootstrap.getServiceUrlsForAs( "7" ).getHttpsUrl() );
+        assertEquals( "https://rdap.db.ripe.net", asBootstrap.getServiceUrlsForAs( "248" ).getHttpsUrl() );
+        assertEquals( "https://rdap.db.ripe.net", asBootstrap.getServiceUrlsForAs( "251" ).getHttpsUrl() );
+        assertEquals( "https://rdap.lacnic.net/rdap", asBootstrap.getServiceUrlsForAs( "11450" ).getHttpsUrl() );
+        assertEquals( "https://rdap.lacnic.net/rdap", asBootstrap.getServiceUrlsForAs( "11451" ).getHttpsUrl() );
+        assertEquals( "http://rdap.afrinic.net/rdap", asBootstrap.getServiceUrlsForAs( "11569" ).getHttpUrl() );
+        assertEquals( "https://rdap.apnic.net", asBootstrap.getServiceUrlsForAs( "17408" ).getHttpsUrl() );
+        assertEquals( "https://rdap.apnic.net", asBootstrap.getServiceUrlsForAs( "18431" ).getHttpsUrl() );
+        assertNull( asBootstrap.getServiceUrlsForAs( "4294967294" ) );
     }
 
 }

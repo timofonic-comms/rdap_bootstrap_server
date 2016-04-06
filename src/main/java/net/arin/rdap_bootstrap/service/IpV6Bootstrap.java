@@ -28,7 +28,7 @@ import com.googlecode.ipv6.IPv6Network;
 /**
  * @version $Rev$, $Date$
  */
-public class IpV6Bootstrap implements JsonBootstrapFile.Handler
+public class IpV6Bootstrap implements Bootstrap, Bootstrap.IpV6Lookup, JsonBootstrapFile.Handler
 {
     private volatile TreeMap<Long, ServiceUrls> allocations = new TreeMap<Long, ServiceUrls>();
     private TreeMap<Long, ServiceUrls> _allocations;
@@ -78,7 +78,7 @@ public class IpV6Bootstrap implements JsonBootstrapFile.Handler
     public void loadData( ResourceFiles resourceFiles )
         throws Exception
     {
-        Bootstrap bsFile = new JsonBootstrapFile();
+        JsonBootstrapFile bsFile = new JsonBootstrapFile();
         bsFile.loadData( resourceFiles.getInputStream( BootFiles.V6.getKey() ), this );
     }
 
@@ -93,12 +93,12 @@ public class IpV6Bootstrap implements JsonBootstrapFile.Handler
         return retval;
     }
 
-    public ServiceUrls getServiceUrls( IPv6Address addr )
+    public ServiceUrls getServiceUrlsForIpV6( IPv6Address addr )
     {
         return getServiceUrls( addr.getHighBits() );
     }
 
-    public ServiceUrls getServiceUrls( IPv6Network net )
+    public ServiceUrls getServiceUrlsForIpV6( IPv6Network net )
     {
         return getServiceUrls( net.getFirst().getHighBits() );
     }

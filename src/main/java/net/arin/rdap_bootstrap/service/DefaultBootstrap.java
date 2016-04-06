@@ -16,31 +16,12 @@
  */
 package net.arin.rdap_bootstrap.service;
 
-import net.arin.rdap_bootstrap.service.Bootstrap.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 
 import java.util.HashMap;
 
-public class DefaultBootstrap implements JsonBootstrapFile.Handler
+public class DefaultBootstrap implements Bootstrap, Bootstrap.DefaultLookup, JsonBootstrapFile.Handler
 {
-    public enum Type {
-        NAMESERVER("nameserver"),
-        IP("ip"),
-        AUTNUM("autnum"),
-        ENTITY("entity"),
-        DOMAIN("domain");
-
-        private String pValue;
-        private Type( String pValue )
-        {
-            this.pValue = pValue;
-        }
-
-        public String getPValue()
-        {
-            return pValue;
-        }
-    }
 
     private volatile HashMap<String,ServiceUrls> allocations = new HashMap<String, ServiceUrls>(  );
     private HashMap<String,ServiceUrls> _allocations;
@@ -52,7 +33,7 @@ public class DefaultBootstrap implements JsonBootstrapFile.Handler
     public void loadData( ResourceFiles resourceFiles )
         throws Exception
     {
-        Bootstrap bsFile = new JsonBootstrapFile();
+        JsonBootstrapFile bsFile = new JsonBootstrapFile();
         bsFile.loadData( resourceFiles.getInputStream( BootFiles.DEFAULT.getKey() ), this );
     }
 
@@ -92,7 +73,7 @@ public class DefaultBootstrap implements JsonBootstrapFile.Handler
         serviceUrls.addUrl( url );
     }
 
-    public ServiceUrls getServiceUrls( Type type )
+    public ServiceUrls getServiceUrlsForDefault( Type type )
     {
         return allocations.get( type.getPValue() );
     }

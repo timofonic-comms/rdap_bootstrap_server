@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 import net.arin.rdap_bootstrap.Constants;
 import net.arin.rdap_bootstrap.json.Notice;
 import net.arin.rdap_bootstrap.json.Response;
-import net.arin.rdap_bootstrap.service.DefaultBootstrap.Type;
 import net.arin.rdap_bootstrap.service.Bootstrap.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 import net.arin.rdap_bootstrap.service.Statistics.UrlHits;
@@ -107,7 +106,7 @@ public class RedirectServlet extends HttpServlet
             ServiceUrls urls = baseMaker.makeBase( pathInfo );
             if ( urls == null && defaultType != null )
             {
-                urls = defaultBootstrap.getServiceUrls( defaultType );
+                urls = defaultBootstrap.getServiceUrlsForDefault( defaultType );
                 hits = UrlHits.DEFAULTHITS;
             }
             if ( urls == null )
@@ -183,24 +182,24 @@ public class RedirectServlet extends HttpServlet
             String pathInfo = req.getPathInfo();
             if ( pathInfo.startsWith( "/domain/" ) )
             {
-                serve( UrlHits.DOMAINHITS, new MakeDomainBase(), Type.DOMAIN, pathInfo, req, resp );
+                serve( UrlHits.DOMAINHITS, new MakeDomainBase(), Bootstrap.Type.DOMAIN, pathInfo, req, resp );
             }
             else if ( pathInfo.startsWith( "/nameserver/" ) )
             {
-                serve( UrlHits.NAMESERVERHITS, new MakeNameserverBase(), Type.NAMESERVER, pathInfo, req,
+                serve( UrlHits.NAMESERVERHITS, new MakeNameserverBase(), Bootstrap.Type.NAMESERVER, pathInfo, req,
                     resp );
             }
             else if ( pathInfo.startsWith( "/ip/" ) )
             {
-                serve( UrlHits.IPHITS, new MakeIpBase(), Type.IP, pathInfo, req, resp );
+                serve( UrlHits.IPHITS, new MakeIpBase(), Bootstrap.Type.IP, pathInfo, req, resp );
             }
             else if ( pathInfo.startsWith( "/entity/" ) )
             {
-                serve( UrlHits.ENTITYHITS, new MakeEntityBase(), Type.ENTITY, pathInfo, req, resp );
+                serve( UrlHits.ENTITYHITS, new MakeEntityBase(), Bootstrap.Type.ENTITY, pathInfo, req, resp );
             }
             else if ( pathInfo.startsWith( "/autnum/" ) )
             {
-                serve( UrlHits.ASHITS, new MakeAutnumBase(), Type.AUTNUM, pathInfo, req, resp );
+                serve( UrlHits.ASHITS, new MakeAutnumBase(), Bootstrap.Type.AUTNUM, pathInfo, req, resp );
             }
             else if ( pathInfo.startsWith( "/help" ) )
             {
@@ -228,7 +227,7 @@ public class RedirectServlet extends HttpServlet
     {
         public ServiceUrls makeBase( String pathInfo )
         {
-            return asBootstrap.getServiceUrls( pathInfo.split( "/" )[2] );
+            return asBootstrap.getServiceUrlsForAs( pathInfo.split( "/" )[2] );
         }
     }
 
@@ -246,7 +245,7 @@ public class RedirectServlet extends HttpServlet
             if ( pathInfo.indexOf( ":" ) == -1 ) // is not ipv6
             {
                 // String firstOctet = pathInfo.split( "\\." )[ 0 ];
-                return ipV4Bootstrap.getServiceUrls( pathInfo );
+                return ipV4Bootstrap.getServiceUrlsForIpV4( pathInfo );
             }
             // else
             IPv6Address addr = null;
@@ -259,7 +258,7 @@ public class RedirectServlet extends HttpServlet
                 IPv6Network net = IPv6Network.fromString( pathInfo );
                 addr = net.getFirst();
             }
-            return ipV6Bootstrap.getServiceUrls( addr );
+            return ipV6Bootstrap.getServiceUrlsForIpV6( addr );
         }
     }
 
@@ -309,7 +308,7 @@ public class RedirectServlet extends HttpServlet
                 s += words[words.length - 1];// el último sin DELIMITER
                 s += "/" + BITS_PER_WORD * n;
 
-                return ipV4Bootstrap.getServiceUrls( s );
+                return ipV4Bootstrap.getServiceUrlsForIpV4( s );
 
             }
             else if ( pathInfo.endsWith( ".ip6.arpa" ) )
@@ -351,11 +350,11 @@ public class RedirectServlet extends HttpServlet
                         byteIdx++;
                     }
                 }
-                return ipV6Bootstrap.getServiceUrls( IPv6Address.fromByteArray( bytes ) );
+                return ipV6Bootstrap.getServiceUrlsForIpV6( IPv6Address.fromByteArray( bytes ) );
             }
             // else
             String[] labels = pathInfo.split( "\\." );
-            return domainBootstrap.getServiceUrls( labels[labels.length - 1] );
+            return domainBootstrap.getServiceUrlsForDomain( labels[labels.length - 1] );
         }
 
     }
@@ -377,7 +376,7 @@ public class RedirectServlet extends HttpServlet
                 pathInfo = pathInfo.substring( 0, pathInfo.length() - 1 );
             }
             String[] labels = pathInfo.split( "\\." );
-            return domainBootstrap.getServiceUrls( labels[labels.length - 1] );
+            return domainBootstrap.getServiceUrlsForDomain( labels[labels.length - 1] );
         }
     }
 
@@ -393,7 +392,7 @@ public class RedirectServlet extends HttpServlet
             int i = pathInfo.lastIndexOf( '-' );
             if ( i != -1 && i + 1 < pathInfo.length() )
             {
-                return entityBootstrap.getServiceUrls( pathInfo.substring( i + 1 ) );
+                return entityBootstrap.getServiceUrlsForEntity( pathInfo.substring( i + 1 ) );
             }
             // else
             return null;

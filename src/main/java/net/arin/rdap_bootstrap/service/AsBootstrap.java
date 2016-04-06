@@ -16,7 +16,6 @@
  */
 package net.arin.rdap_bootstrap.service;
 
-import net.arin.rdap_bootstrap.service.Bootstrap.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 
 import java.util.Map;
@@ -25,7 +24,7 @@ import java.util.TreeMap;
 /**
  * @version $Rev$, $Date$
  */
-public class AsBootstrap implements JsonBootstrapFile.Handler
+public class AsBootstrap implements Bootstrap, Bootstrap.AsLookup, JsonBootstrapFile.Handler
 {
     private class AsRangeInfo
     {
@@ -117,11 +116,11 @@ public class AsBootstrap implements JsonBootstrapFile.Handler
     public void loadData( ResourceFiles resourceFiles )
         throws Exception
     {
-        Bootstrap bsFile = new JsonBootstrapFile();
+        JsonBootstrapFile bsFile = new JsonBootstrapFile();
         bsFile.loadData( resourceFiles.getInputStream( BootFiles.AS.getKey() ), this );
     }
 
-    public ServiceUrls getServiceUrls( String autnum )
+    public ServiceUrls getServiceUrlsForAs( String autnum )
     {
         long number = Long.parseLong( autnum );
         Map.Entry<Long,AsRangeInfo> entry = allocations.floorEntry( number );

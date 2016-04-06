@@ -27,7 +27,7 @@ import java.util.ArrayList;
  * An abstraction for generically processing the JSON bootstrap files.
  * @version $Rev$, $Date$
  */
-public class JsonBootstrapFile implements Bootstrap
+public class JsonBootstrapFile
 {
 
     /**
@@ -46,7 +46,6 @@ public class JsonBootstrapFile implements Bootstrap
         public void setDescription( String description );
     }
 
-    @Override
     public void loadData( InputStream inputStream, Handler handler )
         throws Exception
     {

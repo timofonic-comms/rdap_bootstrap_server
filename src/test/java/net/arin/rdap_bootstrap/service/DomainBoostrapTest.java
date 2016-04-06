@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013, 2015 American Registry for Internet Numbers (ARIN)
+ * Copyright (C) 2013-2016 American Registry for Internet Numbers (ARIN)
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -31,7 +31,7 @@ public class DomainBoostrapTest
         DomainBootstrap domain = new DomainBootstrap();
         domain.loadData( new ResourceFiles() );
 
-        assertEquals( "http://rdg.afilias.info/rdap", domain.getServiceUrls( "foo.info" ).getHttpUrl() );
-        assertEquals( "http://rdg.afilias.info/rdap", domain.getServiceUrls( "info" ).getHttpUrl() );
+        assertEquals( "http://rdg.afilias.info/rdap", domain.getServiceUrlsForDomain( "foo.info" ).getHttpUrl() );
+        assertEquals( "http://rdg.afilias.info/rdap", domain.getServiceUrlsForDomain( "info" ).getHttpUrl() );
     }
 }

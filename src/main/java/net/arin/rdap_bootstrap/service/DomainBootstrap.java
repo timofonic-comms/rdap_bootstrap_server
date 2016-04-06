@@ -24,7 +24,7 @@ import java.util.HashMap;
 /**
  * @version $Rev$, $Date$
  */
-public class DomainBootstrap implements JsonBootstrapFile.Handler
+public class DomainBootstrap implements Bootstrap, Bootstrap.DomainLookup, JsonBootstrapFile.Handler
 {
     private volatile HashMap<String,ServiceUrls> allocations = new HashMap<String, ServiceUrls>(  );
     private HashMap<String,ServiceUrls> _allocations;
@@ -36,7 +36,7 @@ public class DomainBootstrap implements JsonBootstrapFile.Handler
     public void loadData( ResourceFiles resourceFiles )
         throws Exception
     {
-        Bootstrap bsFile = new JsonBootstrapFile();
+        JsonBootstrapFile bsFile = new JsonBootstrapFile();
         bsFile.loadData( resourceFiles.getInputStream( BootFiles.DOMAIN.getKey() ), this );
     }
 
@@ -76,7 +76,7 @@ public class DomainBootstrap implements JsonBootstrapFile.Handler
         serviceUrls.addUrl( url );
     }
 
-    public ServiceUrls getServiceUrls( String domain )
+    public ServiceUrls getServiceUrlsForDomain( String domain )
     {
         domain = domain.toUpperCase();
         int idx = 0;
