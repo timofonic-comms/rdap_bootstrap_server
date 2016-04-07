@@ -34,7 +34,11 @@ public class DefaultBootstrapTest
 
         assertEquals( "http://rdap.arin.net/registry",
             d.getServiceUrlsForDefault( Lookup.Type.AUTNUM ).getHttpUrl() );
+        assertEquals( "http://rdap.arin.net/registry",
+            d.getServiceUrlsForAs( "1" ).getHttpUrl() );
         assertEquals( "http://rdg.afilias.info/rdap",
             d.getServiceUrlsForDefault( Lookup.Type.DOMAIN ).getHttpUrl() );
+        assertEquals( "http://rdg.afilias.info/rdap",
+            d.getServiceUrlsForDomain( "foo.info" ).getHttpUrl() );
     }
 }

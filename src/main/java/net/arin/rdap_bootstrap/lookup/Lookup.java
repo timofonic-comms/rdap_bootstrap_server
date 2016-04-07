@@ -49,11 +49,6 @@ public interface Lookup
         ServiceUrls getServiceUrlsForAs( String autnum );
     }
 
-    interface Default
-    {
-        ServiceUrls getServiceUrlsForDefault( Type type );
-    }
-
     interface Domain
     {
         ServiceUrls getServiceUrlsForDomain( String domain );
