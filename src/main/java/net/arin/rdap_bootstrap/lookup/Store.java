@@ -15,10 +15,7 @@
  */
 package net.arin.rdap_bootstrap.lookup;
 
-import com.googlecode.ipv6.IPv6Address;
 import com.googlecode.ipv6.IPv6Network;
-
-import java.util.ArrayList;
 
 /**
  * Defines the interfaces for storing data.
@@ -48,7 +45,6 @@ public interface Store
 
     interface IpV6
     {
-        ServiceUrls getServiceUrlsForIpV6( IPv6Address addr );
-        ServiceUrls getServiceUrlsForIpV6( IPv6Network net );
+        void store( IPv6Network iPv6Network, ServiceUrls serviceUrls );
     }
 }

@@ -19,6 +19,7 @@ package net.arin.rdap_bootstrap.service;
 import java.util.Map;
 import java.util.TreeMap;
 
+import net.arin.rdap_bootstrap.lookup.IpV6TreeMap;
 import net.arin.rdap_bootstrap.lookup.Lookup.IpV6;
 import net.arin.rdap_bootstrap.lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
@@ -31,8 +32,8 @@ import com.googlecode.ipv6.IPv6Network;
  */
 public class IpV6Bootstrap implements Bootstrap, IpV6, Rfc7484.Handler
 {
-    private volatile TreeMap<Long, ServiceUrls> allocations = new TreeMap<Long, ServiceUrls>();
-    private TreeMap<Long, ServiceUrls> _allocations;
+    private volatile IpV6TreeMap allocations = new IpV6TreeMap();
+    private          IpV6TreeMap _allocations;
 
     private ServiceUrls serviceUrls;
     private String publication;
@@ -41,7 +42,7 @@ public class IpV6Bootstrap implements Bootstrap, IpV6, Rfc7484.Handler
     @Override
     public void startServices()
     {
-        _allocations = new TreeMap<Long, ServiceUrls>();
+        _allocations = new IpV6TreeMap();
     }
 
     @Override
@@ -66,8 +67,7 @@ public class IpV6Bootstrap implements Bootstrap, IpV6, Rfc7484.Handler
     public void addServiceEntry( String entry )
     {
         IPv6Network v6net = IPv6Network.fromString( entry );
-        long key = v6net.getFirst().getHighBits();
-        _allocations.put( key, serviceUrls );
+        _allocations.store( v6net, serviceUrls );
     }
 
     @Override
@@ -83,25 +83,14 @@ public class IpV6Bootstrap implements Bootstrap, IpV6, Rfc7484.Handler
         bsFile.loadData( resourceFiles.getInputStream( BootFiles.V6.getKey() ), this );
     }
 
-    public ServiceUrls getServiceUrls( long prefix )
-    {
-        ServiceUrls retval = null;
-        Map.Entry<Long, ServiceUrls> entry = allocations.floorEntry( prefix );
-        if ( entry != null )
-        {
-            retval = entry.getValue();
-        }
-        return retval;
-    }
-
     public ServiceUrls getServiceUrlsForIpV6( IPv6Address addr )
     {
-        return getServiceUrls( addr.getHighBits() );
+        return allocations.getServiceUrlsForIpV6( addr );
     }
 
     public ServiceUrls getServiceUrlsForIpV6( IPv6Network net )
     {
-        return getServiceUrls( net.getFirst().getHighBits() );
+        return allocations.getServiceUrlsForIpV6( net );
     }
 
     @Override
