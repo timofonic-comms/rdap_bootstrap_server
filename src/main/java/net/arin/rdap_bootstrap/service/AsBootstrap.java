@@ -17,7 +17,8 @@
 package net.arin.rdap_bootstrap.service;
 
 import net.arin.rdap_bootstrap.lookup.AsRangeInfo;
-import net.arin.rdap_bootstrap.lookup.Lookup.As;
+import net.arin.rdap_bootstrap.lookup.AsTreeMap;
+import net.arin.rdap_bootstrap.lookup.Lookup;
 import net.arin.rdap_bootstrap.lookup.Lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 
@@ -27,11 +28,11 @@ import java.util.TreeMap;
 /**
  * @version $Rev$, $Date$
  */
-public class AsBootstrap implements Bootstrap, As, Rfc7484.Handler
+public class AsBootstrap implements Bootstrap, Lookup.As, Rfc7484.Handler
 {
 
-    private volatile TreeMap<Long,AsRangeInfo> allocations = new TreeMap<Long, AsRangeInfo>(  );
-    private TreeMap<Long,AsRangeInfo> _allocations;
+    private volatile AsTreeMap allocations = new AsTreeMap();
+    private          AsTreeMap _allocations;
 
     private ServiceUrls serviceUrls;
     private String publication;
@@ -40,7 +41,7 @@ public class AsBootstrap implements Bootstrap, As, Rfc7484.Handler
     @Override
     public void startServices()
     {
-        _allocations = new TreeMap<Long, AsRangeInfo>();
+        _allocations = new AsTreeMap();
     }
 
     @Override
@@ -74,7 +75,7 @@ public class AsBootstrap implements Bootstrap, As, Rfc7484.Handler
                 max = Long.parseLong( arr[1] );
             }
             AsRangeInfo asRangeInfo = new AsRangeInfo( key, max, serviceUrls );
-            _allocations.put( key, asRangeInfo );
+            _allocations.store( asRangeInfo );
         }
     }
 
@@ -93,18 +94,7 @@ public class AsBootstrap implements Bootstrap, As, Rfc7484.Handler
 
     public ServiceUrls getServiceUrlsForAs( String autnum )
     {
-        long number = Long.parseLong( autnum );
-        Map.Entry<Long,AsRangeInfo> entry = allocations.floorEntry( number );
-        if( entry != null )
-        {
-            AsRangeInfo asRangeInfo = entry.getValue();
-            if( number <= asRangeInfo.getAsEnd() )
-            {
-                return asRangeInfo.getServiceUrls();
-            }
-        }
-        //else
-        return null;
+        return allocations.getServiceUrlsForAs( autnum );
     }
 
     @Override
