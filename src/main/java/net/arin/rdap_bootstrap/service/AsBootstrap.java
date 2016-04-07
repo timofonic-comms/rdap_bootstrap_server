@@ -68,16 +68,13 @@ public class AsBootstrap implements Bootstrap, As, Rfc7484.Handler
         {
             String[] arr = entry.split("-");
             long key = Long.parseLong( arr[0] );
-            if( !_allocations.containsKey( key ) )
+            long max = key;
+            if( arr.length ==2 )
             {
-                long max = key;
-                if( arr.length ==2 )
-                {
-                    max = Long.parseLong( arr[1] );
-                }
-                AsRangeInfo asRangeInfo = new AsRangeInfo( key, max, serviceUrls );
-                _allocations.put( key, asRangeInfo );
+                max = Long.parseLong( arr[1] );
             }
+            AsRangeInfo asRangeInfo = new AsRangeInfo( key, max, serviceUrls );
+            _allocations.put( key, asRangeInfo );
         }
     }
 

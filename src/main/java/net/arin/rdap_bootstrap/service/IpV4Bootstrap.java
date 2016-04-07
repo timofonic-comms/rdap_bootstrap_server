@@ -111,6 +111,8 @@ public class IpV4Bootstrap implements Bootstrap, IpV4, Rfc7484.Handler
 
         ServiceUrls resultUrl = null;
         IpRange resultNetwork = IpRange.parse( "0.0.0.0/0" );
+        // TODO
+        // YIKES! I hadn't caught this before. Gonna have to fix this iteration over the keyset
         final Set<String> keys = allocations.keySet();
         for ( String key : keys )
         {
