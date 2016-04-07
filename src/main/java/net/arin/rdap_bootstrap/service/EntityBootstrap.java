@@ -21,8 +21,6 @@ import net.arin.rdap_bootstrap.lookup.Lookup.Entity;
 import net.arin.rdap_bootstrap.lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 
-import java.util.HashMap;
-
 /**
  * @version $Rev$, $Date$
  */
