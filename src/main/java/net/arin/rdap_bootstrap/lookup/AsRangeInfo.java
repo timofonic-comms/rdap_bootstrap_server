@@ -15,8 +15,6 @@
  */
 package net.arin.rdap_bootstrap.lookup;
 
-import net.arin.rdap_bootstrap.lookup.Lookup.ServiceUrls;
-
 /**
  * Represents AS Ranges.
  */

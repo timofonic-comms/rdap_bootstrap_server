@@ -38,7 +38,7 @@ import net.arin.rdap_bootstrap.json.Notice;
 import net.arin.rdap_bootstrap.json.Response;
 import net.arin.rdap_bootstrap.lookup.Lookup;
 import net.arin.rdap_bootstrap.lookup.Lookup.Type;
-import net.arin.rdap_bootstrap.lookup.Lookup.ServiceUrls;
+import net.arin.rdap_bootstrap.lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 import net.arin.rdap_bootstrap.service.Statistics.UrlHits;
 

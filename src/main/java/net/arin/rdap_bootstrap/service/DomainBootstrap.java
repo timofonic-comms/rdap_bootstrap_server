@@ -16,8 +16,9 @@
  */
 package net.arin.rdap_bootstrap.service;
 
+import net.arin.rdap_bootstrap.lookup.DomainHashMap;
 import net.arin.rdap_bootstrap.lookup.Lookup.Domain;
-import net.arin.rdap_bootstrap.lookup.Lookup.ServiceUrls;
+import net.arin.rdap_bootstrap.lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 
 import java.util.HashMap;
@@ -27,8 +28,8 @@ import java.util.HashMap;
  */
 public class DomainBootstrap implements Bootstrap, Domain, Rfc7484.Handler
 {
-    private volatile HashMap<String,ServiceUrls> allocations = new HashMap<String, ServiceUrls>(  );
-    private HashMap<String,ServiceUrls> _allocations;
+    private volatile DomainHashMap allocations = new DomainHashMap();
+    private          DomainHashMap _allocations;
 
     private ServiceUrls serviceUrls;
     private String publication;
@@ -44,7 +45,7 @@ public class DomainBootstrap implements Bootstrap, Domain, Rfc7484.Handler
     @Override
     public void startServices()
     {
-        _allocations = new HashMap<String, ServiceUrls>(  );
+        _allocations = new DomainHashMap();
     }
 
     @Override
@@ -68,7 +69,7 @@ public class DomainBootstrap implements Bootstrap, Domain, Rfc7484.Handler
     @Override
     public void addServiceEntry( String entry )
     {
-        _allocations.put( entry.toUpperCase(), serviceUrls );
+        _allocations.store( entry.toUpperCase(), serviceUrls );
     }
 
     @Override
@@ -79,24 +80,7 @@ public class DomainBootstrap implements Bootstrap, Domain, Rfc7484.Handler
 
     public ServiceUrls getServiceUrlsForDomain( String domain )
     {
-        domain = domain.toUpperCase();
-        int idx = 0;
-        ServiceUrls retval = null;
-        while( idx != -1 )
-        {
-            retval = allocations.get( domain.substring( idx ) );
-            if( retval != null )
-            {
-                break;
-            }
-            //else
-            idx = domain.indexOf( ".", idx );
-            if( idx != -1 )
-            {
-                idx++;
-            }
-        }
-        return retval;
+        return allocations.getServiceUrlsForDomain( domain );
     }
 
     @Override

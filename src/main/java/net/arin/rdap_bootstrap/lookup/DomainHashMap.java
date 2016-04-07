@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2016 American Registry for Internet Numbers (ARIN)
+ * Copyright (C) 2013-2015 American Registry for Internet Numbers (ARIN)
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -16,37 +16,41 @@
  */
 package net.arin.rdap_bootstrap.lookup;
 
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.HashMap;
 
 /**
  * @version $Rev$, $Date$
  */
-public class AsTreeMap implements Lookup.As, Store.As
+public class DomainHashMap implements Lookup.Domain, Store.Domain
 {
-
-    private TreeMap<Long,AsRangeInfo> allocations = new TreeMap<Long, AsRangeInfo>(  );
+    private HashMap<String,ServiceUrls> allocations = new HashMap<String, ServiceUrls>(  );
 
     @Override
-    public void store( AsRangeInfo asRangeInfo )
+    public void store( String entry, ServiceUrls serviceUrls )
     {
-        allocations.put( asRangeInfo.getAsStart(), asRangeInfo );
+        allocations.put( entry.toUpperCase(), serviceUrls );
     }
 
-    public ServiceUrls getServiceUrlsForAs( String autnum )
+    public ServiceUrls getServiceUrlsForDomain( String domain )
     {
-        long number = Long.parseLong( autnum );
-        Map.Entry<Long,AsRangeInfo> entry = allocations.floorEntry( number );
-        if( entry != null )
+        domain = domain.toUpperCase();
+        int idx = 0;
+        ServiceUrls retval = null;
+        while( idx != -1 )
         {
-            AsRangeInfo asRangeInfo = entry.getValue();
-            if( number <= asRangeInfo.getAsEnd() )
+            retval = allocations.get( domain.substring( idx ) );
+            if( retval != null )
             {
-                return asRangeInfo.getServiceUrls();
+                break;
+            }
+            //else
+            idx = domain.indexOf( ".", idx );
+            if( idx != -1 )
+            {
+                idx++;
             }
         }
-        //else
-        return null;
+        return retval;
     }
 
 }

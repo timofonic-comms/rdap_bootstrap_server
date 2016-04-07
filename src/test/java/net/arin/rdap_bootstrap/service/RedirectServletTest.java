@@ -17,7 +17,7 @@
 package net.arin.rdap_bootstrap.service;
 
 import net.arin.rdap_bootstrap.Constants;
-import net.arin.rdap_bootstrap.lookup.Lookup.ServiceUrls;
+import net.arin.rdap_bootstrap.lookup.ServiceUrls;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;

@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import net.arin.rdap_bootstrap.lookup.Lookup.IpV6;
-import net.arin.rdap_bootstrap.lookup.Lookup.ServiceUrls;
+import net.arin.rdap_bootstrap.lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 
 import com.googlecode.ipv6.IPv6Address;

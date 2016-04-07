@@ -19,11 +19,8 @@ package net.arin.rdap_bootstrap.service;
 import net.arin.rdap_bootstrap.lookup.AsRangeInfo;
 import net.arin.rdap_bootstrap.lookup.AsTreeMap;
 import net.arin.rdap_bootstrap.lookup.Lookup;
-import net.arin.rdap_bootstrap.lookup.Lookup.ServiceUrls;
+import net.arin.rdap_bootstrap.lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
-
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * @version $Rev$, $Date$

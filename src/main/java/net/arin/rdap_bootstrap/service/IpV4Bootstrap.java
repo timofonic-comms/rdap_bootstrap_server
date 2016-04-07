@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import net.arin.rdap_bootstrap.lookup.Lookup.IpV4;
-import net.arin.rdap_bootstrap.lookup.Lookup.ServiceUrls;
+import net.arin.rdap_bootstrap.lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 import net.ripe.ipresource.IpRange;
 import net.ripe.ipresource.UniqueIpResource;
