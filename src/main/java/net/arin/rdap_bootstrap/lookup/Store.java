@@ -38,7 +38,7 @@ public interface Store
 
     interface Entity
     {
-        ServiceUrls getServiceUrlsForEntity( String entity );
+        void store( String entity, ServiceUrls serviceUrls );
     }
 
     interface IpV4

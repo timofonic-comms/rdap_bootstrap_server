@@ -16,6 +16,7 @@
  */
 package net.arin.rdap_bootstrap.service;
 
+import net.arin.rdap_bootstrap.lookup.EntityHashMap;
 import net.arin.rdap_bootstrap.lookup.Lookup.Entity;
 import net.arin.rdap_bootstrap.lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
@@ -27,8 +28,8 @@ import java.util.HashMap;
  */
 public class EntityBootstrap implements Bootstrap, Entity, Rfc7484.Handler
 {
-    private volatile HashMap<String,ServiceUrls> allocations = new HashMap<String, ServiceUrls>(  );
-    private HashMap<String,ServiceUrls> _allocations;
+    private volatile EntityHashMap allocations = new EntityHashMap();
+    private          EntityHashMap _allocations;
 
     private ServiceUrls serviceUrls;
     private String publication;
@@ -44,7 +45,7 @@ public class EntityBootstrap implements Bootstrap, Entity, Rfc7484.Handler
     @Override
     public void startServices()
     {
-        _allocations = new HashMap<String, ServiceUrls>(  );
+        _allocations = new EntityHashMap();
     }
 
     @Override
@@ -68,7 +69,7 @@ public class EntityBootstrap implements Bootstrap, Entity, Rfc7484.Handler
     @Override
     public void addServiceEntry( String entry )
     {
-        _allocations.put( entry, serviceUrls );
+        _allocations.store( entry, serviceUrls );
     }
 
     @Override
@@ -77,9 +78,9 @@ public class EntityBootstrap implements Bootstrap, Entity, Rfc7484.Handler
         serviceUrls.addUrl( url );
     }
 
-    public ServiceUrls getServiceUrlsForEntity( String defaultType )
+    public ServiceUrls getServiceUrlsForEntity( String entity )
     {
-        return allocations.get( defaultType );
+        return allocations.getServiceUrlsForEntity( entity );
     }
 
     @Override
