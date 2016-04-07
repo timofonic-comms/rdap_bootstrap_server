@@ -19,7 +19,8 @@ package net.arin.rdap_bootstrap.service;
 import java.util.HashMap;
 import java.util.Set;
 
-import net.arin.rdap_bootstrap.service.Bootstrap.ServiceUrls;
+import net.arin.rdap_bootstrap.lookup.Lookup.IpV4;
+import net.arin.rdap_bootstrap.lookup.Lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 import net.ripe.ipresource.IpRange;
 import net.ripe.ipresource.UniqueIpResource;
@@ -27,7 +28,7 @@ import net.ripe.ipresource.UniqueIpResource;
 /**
  * @version $Rev$, $Date$
  */
-public class IpV4Bootstrap implements Bootstrap, Bootstrap.IpV4Lookup, JsonBootstrapFile.Handler
+public class IpV4Bootstrap implements Bootstrap, IpV4, JsonBootstrapFile.Handler
 {
     private volatile HashMap<String, ServiceUrls> allocations = new HashMap<String, ServiceUrls>();
     private HashMap<String, ServiceUrls> _allocations;

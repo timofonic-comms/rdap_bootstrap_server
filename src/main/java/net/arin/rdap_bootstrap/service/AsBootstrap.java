@@ -16,6 +16,8 @@
  */
 package net.arin.rdap_bootstrap.service;
 
+import net.arin.rdap_bootstrap.lookup.Lookup.As;
+import net.arin.rdap_bootstrap.lookup.Lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 
 import java.util.Map;
@@ -24,7 +26,7 @@ import java.util.TreeMap;
 /**
  * @version $Rev$, $Date$
  */
-public class AsBootstrap implements Bootstrap, Bootstrap.AsLookup, JsonBootstrapFile.Handler
+public class AsBootstrap implements Bootstrap, As, JsonBootstrapFile.Handler
 {
     private class AsRangeInfo
     {
@@ -59,7 +61,7 @@ public class AsBootstrap implements Bootstrap, Bootstrap.AsLookup, JsonBootstrap
     private volatile TreeMap<Long,AsRangeInfo> allocations = new TreeMap<Long, AsRangeInfo>(  );
     private TreeMap<Long,AsRangeInfo> _allocations;
 
-    private Bootstrap.ServiceUrls serviceUrls;
+    private ServiceUrls serviceUrls;
     private String publication;
     private String description;
 

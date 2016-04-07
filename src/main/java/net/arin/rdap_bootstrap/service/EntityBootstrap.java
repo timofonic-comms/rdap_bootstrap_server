@@ -16,7 +16,8 @@
  */
 package net.arin.rdap_bootstrap.service;
 
-import net.arin.rdap_bootstrap.service.Bootstrap.ServiceUrls;
+import net.arin.rdap_bootstrap.lookup.Lookup.Entity;
+import net.arin.rdap_bootstrap.lookup.Lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 
 import java.util.HashMap;
@@ -24,7 +25,7 @@ import java.util.HashMap;
 /**
  * @version $Rev$, $Date$
  */
-public class EntityBootstrap implements Bootstrap, Bootstrap.EntityLookup, JsonBootstrapFile.Handler
+public class EntityBootstrap implements Bootstrap, Entity, JsonBootstrapFile.Handler
 {
     private volatile HashMap<String,ServiceUrls> allocations = new HashMap<String, ServiceUrls>(  );
     private HashMap<String,ServiceUrls> _allocations;

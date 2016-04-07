@@ -16,6 +16,7 @@
  */
 package net.arin.rdap_bootstrap.service;
 
+import net.arin.rdap_bootstrap.lookup.Lookup;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
@@ -32,8 +33,8 @@ public class DefaultBootstrapTest
         d.loadData( new ResourceFiles() );
 
         assertEquals( "http://rdap.arin.net/registry",
-            d.getServiceUrlsForDefault( Bootstrap.Type.AUTNUM ).getHttpUrl() );
+            d.getServiceUrlsForDefault( Lookup.Type.AUTNUM ).getHttpUrl() );
         assertEquals( "http://rdg.afilias.info/rdap",
-            d.getServiceUrlsForDefault( Bootstrap.Type.DOMAIN ).getHttpUrl() );
+            d.getServiceUrlsForDefault( Lookup.Type.DOMAIN ).getHttpUrl() );
     }
 }

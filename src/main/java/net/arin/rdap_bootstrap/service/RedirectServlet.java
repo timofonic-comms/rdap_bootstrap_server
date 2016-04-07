@@ -36,7 +36,9 @@ import javax.servlet.http.HttpServletResponse;
 import net.arin.rdap_bootstrap.Constants;
 import net.arin.rdap_bootstrap.json.Notice;
 import net.arin.rdap_bootstrap.json.Response;
-import net.arin.rdap_bootstrap.service.Bootstrap.ServiceUrls;
+import net.arin.rdap_bootstrap.lookup.Lookup;
+import net.arin.rdap_bootstrap.lookup.Lookup.Type;
+import net.arin.rdap_bootstrap.lookup.Lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 import net.arin.rdap_bootstrap.service.Statistics.UrlHits;
 
@@ -96,7 +98,7 @@ public class RedirectServlet extends HttpServlet
         }
     }
 
-    protected void serve( UrlHits urlHits, BaseMaker baseMaker, DefaultBootstrap.Type defaultType,
+    protected void serve( UrlHits urlHits, BaseMaker baseMaker, Type defaultType,
                           String pathInfo, HttpServletRequest req, HttpServletResponse resp )
         throws IOException
     {
@@ -182,24 +184,24 @@ public class RedirectServlet extends HttpServlet
             String pathInfo = req.getPathInfo();
             if ( pathInfo.startsWith( "/domain/" ) )
             {
-                serve( UrlHits.DOMAINHITS, new MakeDomainBase(), Bootstrap.Type.DOMAIN, pathInfo, req, resp );
+                serve( UrlHits.DOMAINHITS, new MakeDomainBase(), Lookup.Type.DOMAIN, pathInfo, req, resp );
             }
             else if ( pathInfo.startsWith( "/nameserver/" ) )
             {
-                serve( UrlHits.NAMESERVERHITS, new MakeNameserverBase(), Bootstrap.Type.NAMESERVER, pathInfo, req,
+                serve( UrlHits.NAMESERVERHITS, new MakeNameserverBase(), Lookup.Type.NAMESERVER, pathInfo, req,
                     resp );
             }
             else if ( pathInfo.startsWith( "/ip/" ) )
             {
-                serve( UrlHits.IPHITS, new MakeIpBase(), Bootstrap.Type.IP, pathInfo, req, resp );
+                serve( UrlHits.IPHITS, new MakeIpBase(), Lookup.Type.IP, pathInfo, req, resp );
             }
             else if ( pathInfo.startsWith( "/entity/" ) )
             {
-                serve( UrlHits.ENTITYHITS, new MakeEntityBase(), Bootstrap.Type.ENTITY, pathInfo, req, resp );
+                serve( UrlHits.ENTITYHITS, new MakeEntityBase(), Lookup.Type.ENTITY, pathInfo, req, resp );
             }
             else if ( pathInfo.startsWith( "/autnum/" ) )
             {
-                serve( UrlHits.ASHITS, new MakeAutnumBase(), Bootstrap.Type.AUTNUM, pathInfo, req, resp );
+                serve( UrlHits.ASHITS, new MakeAutnumBase(), Lookup.Type.AUTNUM, pathInfo, req, resp );
             }
             else if ( pathInfo.startsWith( "/help" ) )
             {

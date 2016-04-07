@@ -16,11 +16,14 @@
  */
 package net.arin.rdap_bootstrap.service;
 
+import net.arin.rdap_bootstrap.lookup.Lookup.Default;
+import net.arin.rdap_bootstrap.lookup.Lookup.ServiceUrls;
+import net.arin.rdap_bootstrap.lookup.Lookup.Type;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 
 import java.util.HashMap;
 
-public class DefaultBootstrap implements Bootstrap, Bootstrap.DefaultLookup, JsonBootstrapFile.Handler
+public class DefaultBootstrap implements Bootstrap, Default, JsonBootstrapFile.Handler
 {
 
     private volatile HashMap<String,ServiceUrls> allocations = new HashMap<String, ServiceUrls>(  );

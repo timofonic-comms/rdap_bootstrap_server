@@ -19,7 +19,8 @@ package net.arin.rdap_bootstrap.service;
 import java.util.Map;
 import java.util.TreeMap;
 
-import net.arin.rdap_bootstrap.service.Bootstrap.ServiceUrls;
+import net.arin.rdap_bootstrap.lookup.Lookup.IpV6;
+import net.arin.rdap_bootstrap.lookup.Lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 
 import com.googlecode.ipv6.IPv6Address;
@@ -28,7 +29,7 @@ import com.googlecode.ipv6.IPv6Network;
 /**
  * @version $Rev$, $Date$
  */
-public class IpV6Bootstrap implements Bootstrap, Bootstrap.IpV6Lookup, JsonBootstrapFile.Handler
+public class IpV6Bootstrap implements Bootstrap, IpV6, JsonBootstrapFile.Handler
 {
     private volatile TreeMap<Long, ServiceUrls> allocations = new TreeMap<Long, ServiceUrls>();
     private TreeMap<Long, ServiceUrls> _allocations;
