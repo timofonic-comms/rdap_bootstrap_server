@@ -25,7 +25,7 @@ import java.util.HashMap;
 /**
  * @version $Rev$, $Date$
  */
-public class DomainBootstrap implements Bootstrap, Domain, JsonBootstrapFile.Handler
+public class DomainBootstrap implements Bootstrap, Domain, Rfc7484.Handler
 {
     private volatile HashMap<String,ServiceUrls> allocations = new HashMap<String, ServiceUrls>(  );
     private HashMap<String,ServiceUrls> _allocations;
@@ -37,7 +37,7 @@ public class DomainBootstrap implements Bootstrap, Domain, JsonBootstrapFile.Han
     public void loadData( ResourceFiles resourceFiles )
         throws Exception
     {
-        JsonBootstrapFile bsFile = new JsonBootstrapFile();
+        Rfc7484 bsFile = new Rfc7484();
         bsFile.loadData( resourceFiles.getInputStream( BootFiles.DOMAIN.getKey() ), this );
     }
 

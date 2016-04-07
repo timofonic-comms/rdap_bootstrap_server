@@ -29,7 +29,7 @@ import com.googlecode.ipv6.IPv6Network;
 /**
  * @version $Rev$, $Date$
  */
-public class IpV6Bootstrap implements Bootstrap, IpV6, JsonBootstrapFile.Handler
+public class IpV6Bootstrap implements Bootstrap, IpV6, Rfc7484.Handler
 {
     private volatile TreeMap<Long, ServiceUrls> allocations = new TreeMap<Long, ServiceUrls>();
     private TreeMap<Long, ServiceUrls> _allocations;
@@ -79,7 +79,7 @@ public class IpV6Bootstrap implements Bootstrap, IpV6, JsonBootstrapFile.Handler
     public void loadData( ResourceFiles resourceFiles )
         throws Exception
     {
-        JsonBootstrapFile bsFile = new JsonBootstrapFile();
+        Rfc7484 bsFile = new Rfc7484();
         bsFile.loadData( resourceFiles.getInputStream( BootFiles.V6.getKey() ), this );
     }
 

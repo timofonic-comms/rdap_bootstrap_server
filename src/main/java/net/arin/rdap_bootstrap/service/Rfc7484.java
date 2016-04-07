@@ -27,7 +27,7 @@ import java.util.ArrayList;
  * An abstraction for generically processing the JSON bootstrap files.
  * @version $Rev$, $Date$
  */
-public class JsonBootstrapFile
+public class Rfc7484
 {
 
     /**

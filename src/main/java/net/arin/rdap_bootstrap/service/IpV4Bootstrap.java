@@ -28,7 +28,7 @@ import net.ripe.ipresource.UniqueIpResource;
 /**
  * @version $Rev$, $Date$
  */
-public class IpV4Bootstrap implements Bootstrap, IpV4, JsonBootstrapFile.Handler
+public class IpV4Bootstrap implements Bootstrap, IpV4, Rfc7484.Handler
 {
     private volatile HashMap<String, ServiceUrls> allocations = new HashMap<String, ServiceUrls>();
     private HashMap<String, ServiceUrls> _allocations;
@@ -39,7 +39,7 @@ public class IpV4Bootstrap implements Bootstrap, IpV4, JsonBootstrapFile.Handler
 
     public void loadData( ResourceFiles resourceFiles ) throws Exception
     {
-        JsonBootstrapFile bsFile = new JsonBootstrapFile();
+        Rfc7484 bsFile = new Rfc7484();
         bsFile.loadData( resourceFiles.getInputStream( BootFiles.V4.getKey() ), this );
     }
 

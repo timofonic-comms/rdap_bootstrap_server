@@ -26,7 +26,7 @@ import java.util.TreeMap;
 /**
  * @version $Rev$, $Date$
  */
-public class AsBootstrap implements Bootstrap, As, JsonBootstrapFile.Handler
+public class AsBootstrap implements Bootstrap, As, Rfc7484.Handler
 {
     private class AsRangeInfo
     {
@@ -118,7 +118,7 @@ public class AsBootstrap implements Bootstrap, As, JsonBootstrapFile.Handler
     public void loadData( ResourceFiles resourceFiles )
         throws Exception
     {
-        JsonBootstrapFile bsFile = new JsonBootstrapFile();
+        Rfc7484 bsFile = new Rfc7484();
         bsFile.loadData( resourceFiles.getInputStream( BootFiles.AS.getKey() ), this );
     }
 

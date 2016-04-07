@@ -25,7 +25,7 @@ import java.util.HashMap;
 /**
  * @version $Rev$, $Date$
  */
-public class EntityBootstrap implements Bootstrap, Entity, JsonBootstrapFile.Handler
+public class EntityBootstrap implements Bootstrap, Entity, Rfc7484.Handler
 {
     private volatile HashMap<String,ServiceUrls> allocations = new HashMap<String, ServiceUrls>(  );
     private HashMap<String,ServiceUrls> _allocations;
@@ -37,7 +37,7 @@ public class EntityBootstrap implements Bootstrap, Entity, JsonBootstrapFile.Han
     public void loadData( ResourceFiles resourceFiles )
         throws Exception
     {
-        JsonBootstrapFile bsFile = new JsonBootstrapFile();
+        Rfc7484 bsFile = new Rfc7484();
         bsFile.loadData( resourceFiles.getInputStream( BootFiles.ENTITY.getKey() ), this );
     }
 

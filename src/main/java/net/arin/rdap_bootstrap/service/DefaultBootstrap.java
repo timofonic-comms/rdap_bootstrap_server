@@ -26,7 +26,7 @@ import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 import java.util.HashMap;
 
 public class DefaultBootstrap implements Bootstrap, Lookup.As, Lookup.Domain, Lookup.Entity,
-    Lookup.IpV4, Lookup.IpV6, JsonBootstrapFile.Handler
+    Lookup.IpV4, Lookup.IpV6, Rfc7484.Handler
 {
 
     private volatile HashMap<String,ServiceUrls> allocations = new HashMap<String, ServiceUrls>(  );
@@ -39,7 +39,7 @@ public class DefaultBootstrap implements Bootstrap, Lookup.As, Lookup.Domain, Lo
     public void loadData( ResourceFiles resourceFiles )
         throws Exception
     {
-        JsonBootstrapFile bsFile = new JsonBootstrapFile();
+        Rfc7484 bsFile = new Rfc7484();
         bsFile.loadData( resourceFiles.getInputStream( BootFiles.DEFAULT.getKey() ), this );
     }
 
