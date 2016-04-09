@@ -40,8 +40,8 @@ public class EntityHashMap implements Lookup.Entity, Store.Entity
     }
 
     @Override
-    public ServiceUrls getServiceUrlsForEntity( String defaultType )
+    public ServiceUrls getServiceUrlsForEntity( String entity )
     {
-        return allocations.get( defaultType );
+        return allocations.get( entity );
     }
 }

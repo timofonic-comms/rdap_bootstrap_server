@@ -19,6 +19,7 @@ package net.arin.rdap_bootstrap.service;
 import java.util.HashMap;
 import java.util.Set;
 
+import net.arin.rdap_bootstrap.lookup.IpV4TreeMap;
 import net.arin.rdap_bootstrap.lookup.Lookup.IpV4;
 import net.arin.rdap_bootstrap.lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
@@ -30,8 +31,8 @@ import net.ripe.ipresource.UniqueIpResource;
  */
 public class IpV4Bootstrap implements Bootstrap, IpV4, Rfc7484.Handler
 {
-    private volatile HashMap<String, ServiceUrls> allocations = new HashMap<String, ServiceUrls>();
-    private HashMap<String, ServiceUrls> _allocations;
+    private volatile IpV4TreeMap allocations = new IpV4TreeMap();
+    private          IpV4TreeMap _allocations;
 
     private ServiceUrls serviceUrls;
     private String publication;
@@ -46,7 +47,7 @@ public class IpV4Bootstrap implements Bootstrap, IpV4, Rfc7484.Handler
     @Override
     public void startServices()
     {
-        _allocations = new HashMap<String, ServiceUrls>();
+        _allocations = new IpV4TreeMap();
     }
 
     @Override
@@ -70,7 +71,7 @@ public class IpV4Bootstrap implements Bootstrap, IpV4, Rfc7484.Handler
     @Override
     public void addServiceEntry( String entry )
     {
-        _allocations.put( entry, serviceUrls );
+        _allocations.store( IpRange.parse( entry ), serviceUrls );
     }
 
     @Override
@@ -79,52 +80,10 @@ public class IpV4Bootstrap implements Bootstrap, IpV4, Rfc7484.Handler
         serviceUrls.addUrl( url );
     }
 
-    public ServiceUrls getServiceUrlsForIpV4( String prefix )
+    @Override
+    public ServiceUrls getServiceUrlsForIpV4( IpRange ipRange )
     {
-
-        UniqueIpResource start;
-
-        if ( !prefix.contains( "/" ) && prefix.contains( "." ) )
-        {
-            // single host
-            start = UniqueIpResource.parse( prefix );
-        }
-        else if ( !prefix.contains( "/" ) )
-        {
-            // /8 single int behaviour
-            try
-            {
-                new Integer( prefix );
-                start = IpRange.parse( prefix + ".0.0.0/8" ).getStart();
-            }
-            catch ( NumberFormatException e )
-            {
-                // network
-                start = IpRange.parse( prefix ).getStart();
-            }
-        }
-        else
-        {
-            // network
-            start = IpRange.parse( prefix ).getStart();
-        }
-
-        ServiceUrls resultUrl = null;
-        IpRange resultNetwork = IpRange.parse( "0.0.0.0/0" );
-        // TODO
-        // YIKES! I hadn't caught this before. Gonna have to fix this iteration over the keyset
-        final Set<String> keys = allocations.keySet();
-        for ( String key : keys )
-        {
-            final IpRange network = IpRange.parse( key );
-            if ( network.contains( start ) && ( resultNetwork.getPrefixLength() < network
-                .getPrefixLength() ) )
-            {
-                resultNetwork = network;
-                resultUrl = allocations.get( key );
-            }
-        }
-        return resultUrl;
+        return allocations.getServiceUrlsForIpV4( ipRange );
     }
 
     @Override

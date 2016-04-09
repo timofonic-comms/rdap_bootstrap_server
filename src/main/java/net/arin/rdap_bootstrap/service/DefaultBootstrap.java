@@ -22,6 +22,7 @@ import net.arin.rdap_bootstrap.lookup.Lookup;
 import net.arin.rdap_bootstrap.lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.lookup.Lookup.Type;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
+import net.ripe.ipresource.IpRange;
 
 import java.util.HashMap;
 
@@ -103,7 +104,7 @@ public class DefaultBootstrap implements Bootstrap, Lookup.As, Lookup.Domain, Lo
     }
 
     @Override
-    public ServiceUrls getServiceUrlsForIpV4( String prefix )
+    public ServiceUrls getServiceUrlsForIpV4( IpRange ipRange )
     {
         return allocations.get( Type.NAMESERVER.getPValue() );
     }

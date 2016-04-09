@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 American Registry for Internet Numbers (ARIN)
+ * Copyright (C) 2013-2015 American Registry for Internet Numbers (ARIN)
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -12,40 +12,41 @@
  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *
  */
 package net.arin.rdap_bootstrap.lookup;
 
+import com.googlecode.ipv6.IPv6Address;
 import com.googlecode.ipv6.IPv6Network;
 import net.ripe.ipresource.IpRange;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Map;
+import java.util.TreeMap;
+
 /**
- * Defines the interfaces for storing data.
+ * @version $Rev$, $Date$
  */
-public interface Store
+public class IpV4TreeMap implements Lookup.IpV4, Store.IpV4
 {
+    private TreeMap<IpRange, ServiceUrls> allocations = new TreeMap<IpRange, ServiceUrls>();
 
-    interface As
+    @Override
+    public void store( IpRange ipRange, ServiceUrls serviceUrls )
     {
-        void store( AsRangeInfo asRangeInfo );
+        allocations.put( ipRange, serviceUrls );
     }
 
-    interface Domain
+    public ServiceUrls getServiceUrlsForIpV4( IpRange ipRange )
     {
-        void store( String domain, ServiceUrls serviceUrls );
+        ServiceUrls retval = null;
+        Map.Entry<IpRange, ServiceUrls> entry = allocations.floorEntry( ipRange );
+        if( entry != null )
+        {
+            retval = entry.getValue();
+        }
+        return retval;
     }
 
-    interface Entity
-    {
-        void store( String entity, ServiceUrls serviceUrls );
-    }
-
-    interface IpV4
-    {
-        void store( IpRange ipRange, ServiceUrls serviceUrls );
-    }
-
-    interface IpV6
-    {
-        void store( IPv6Network iPv6Network, ServiceUrls serviceUrls );
-    }
 }

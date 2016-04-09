@@ -48,6 +48,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.googlecode.ipv6.IPv6Address;
 import com.googlecode.ipv6.IPv6Network;
+import net.ripe.ipresource.IpRange;
 
 /**
  * @version $Rev$, $Date$
@@ -246,8 +247,7 @@ public class RedirectServlet extends HttpServlet
             pathInfo = pathInfo.substring( 4 );
             if ( pathInfo.indexOf( ":" ) == -1 ) // is not ipv6
             {
-                // String firstOctet = pathInfo.split( "\\." )[ 0 ];
-                return ipV4Bootstrap.getServiceUrlsForIpV4( pathInfo );
+                return ipV4Bootstrap.getServiceUrlsForIpV4( IpRange.parse( pathInfo) );
             }
             // else
             IPv6Address addr = null;
@@ -310,7 +310,7 @@ public class RedirectServlet extends HttpServlet
                 s += words[words.length - 1];// el último sin DELIMITER
                 s += "/" + BITS_PER_WORD * n;
 
-                return ipV4Bootstrap.getServiceUrlsForIpV4( s );
+                return ipV4Bootstrap.getServiceUrlsForIpV4( IpRange.parse( s ) );
 
             }
             else if ( pathInfo.endsWith( ".ip6.arpa" ) )
