@@ -43,9 +43,13 @@ public class IpResourceTest
         assertEquals( "1.255.255.255", IpRange.parse( "1.0.0.0/8" ).getEnd().toString() );
         assertEquals( 8, IpRange.parse( "1.0.0.0/8" ).getPrefixLength() );
         assertEquals( 32, IpRange.parse( "1.0.0.0/32" ).getPrefixLength() );
+        assertEquals( "1.0.0.0", IpResource.parse( "1.0.0.0" ).toString() );
+        assertEquals( "1.0.0.0", IpResource.parse( "1.0.0.0/8" ).getStart().toString() );
+        assertEquals( "1.255.255.255", IpResource.parse( "1.0.0.0/8" ).getEnd().toString() );
 
         assertEquals( "2620::", UniqueIpResource.parse( "2620::" ).toString() );
-        assertEquals( "2620::", UniqueIpResource.parse( "2620:0000:0000:0000:0000:0000:0000:0000" ).toString() );
+        assertEquals( "2620::", UniqueIpResource.parse(
+            "2620:0000:0000:0000:0000:0000:0000:0000" ).toString() );
         assertEquals( "2620::", UniqueIpResource.parse( "2620::0" ).toString() );
         assertEquals( "2620::", IpAddress.parse( "2620::" ).toString() );
         assertEquals( "2620::", IpAddress.parse( "2620:0000:0000:0000:0000:0000:0000:0000" ).toString() );
@@ -57,6 +61,9 @@ public class IpResourceTest
         assertEquals( "2620:ffff:ffff:ffff:ffff:ffff:ffff:ffff", IpRange.parse( "2620::0/16" ).getEnd().toString() );
         assertEquals( 16, IpRange.parse( "2620::0/16" ).getPrefixLength() );
         assertEquals( 48, IpRange.parse( "2620::0/48" ).getPrefixLength() );
+        assertEquals( "2620::", IpResource.parse( "2620::" ).toString() );
+        assertEquals( "2620::", IpResource.parse( "2620::0/16" ).getStart().toString() );
+        assertEquals( "2620:ffff:ffff:ffff:ffff:ffff:ffff:ffff", IpResource.parse( "2620::0/16" ).getEnd().toString() );
     }
 
     @Test
