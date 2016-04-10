@@ -43,7 +43,7 @@ public interface Lookup
 
     interface As
     {
-        ServiceUrls getServiceUrlsForAs( String autnum );
+        ServiceUrls getServiceUrlsForAs( IpResource ipResource);
     }
 
     interface Domain

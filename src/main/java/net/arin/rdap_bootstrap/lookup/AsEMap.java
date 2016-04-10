@@ -16,37 +16,29 @@
  */
 package net.arin.rdap_bootstrap.lookup;
 
-import java.util.Map;
-import java.util.TreeMap;
+import net.ripe.ipresource.IpResource;
+import net.ripe.ipresource.etree.IpResourceIntervalStrategy;
+import net.ripe.ipresource.etree.NestedIntervalMap;
 
 /**
  * @version $Rev$, $Date$
  */
-public class AsTreeMap implements Lookup.As, Store.As
+public class AsEMap implements Lookup.As, Store.As
 {
 
-    private TreeMap<Long,AsRangeInfo> allocations = new TreeMap<Long, AsRangeInfo>(  );
+    private NestedIntervalMap<IpResource,ServiceUrls> allocations = new NestedIntervalMap<IpResource, ServiceUrls>(
+        IpResourceIntervalStrategy.getInstance() );
 
     @Override
-    public void store( AsRangeInfo asRangeInfo )
+    public void store( IpResource ipResource, ServiceUrls serviceUrls )
     {
-        allocations.put( asRangeInfo.getAsStart(), asRangeInfo );
+        allocations.put( ipResource, serviceUrls );
     }
 
-    public ServiceUrls getServiceUrlsForAs( String autnum )
+    @Override
+    public ServiceUrls getServiceUrlsForAs( IpResource ipResource )
     {
-        long number = Long.parseLong( autnum );
-        Map.Entry<Long,AsRangeInfo> entry = allocations.floorEntry( number );
-        if( entry != null )
-        {
-            AsRangeInfo asRangeInfo = entry.getValue();
-            if( number <= asRangeInfo.getAsEnd() )
-            {
-                return asRangeInfo.getServiceUrls();
-            }
-        }
-        //else
-        return null;
+        return allocations.findExactOrFirstLessSpecific( ipResource );
     }
 
 }

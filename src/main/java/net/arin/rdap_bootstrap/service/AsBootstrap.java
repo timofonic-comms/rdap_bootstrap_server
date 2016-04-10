@@ -16,11 +16,11 @@
  */
 package net.arin.rdap_bootstrap.service;
 
-import net.arin.rdap_bootstrap.lookup.AsRangeInfo;
-import net.arin.rdap_bootstrap.lookup.AsTreeMap;
+import net.arin.rdap_bootstrap.lookup.AsEMap;
 import net.arin.rdap_bootstrap.lookup.Lookup;
 import net.arin.rdap_bootstrap.lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
+import net.ripe.ipresource.IpResource;
 
 /**
  * @version $Rev$, $Date$
@@ -28,8 +28,8 @@ import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 public class AsBootstrap implements Bootstrap, Lookup.As, Rfc7484.Handler
 {
 
-    private volatile AsTreeMap allocations = new AsTreeMap();
-    private          AsTreeMap _allocations;
+    private volatile AsEMap allocations = new AsEMap();
+    private AsEMap _allocations;
 
     private ServiceUrls serviceUrls;
     private String publication;
@@ -38,7 +38,7 @@ public class AsBootstrap implements Bootstrap, Lookup.As, Rfc7484.Handler
     @Override
     public void startServices()
     {
-        _allocations = new AsTreeMap();
+        _allocations = new AsEMap();
     }
 
     @Override
@@ -62,18 +62,7 @@ public class AsBootstrap implements Bootstrap, Lookup.As, Rfc7484.Handler
     @Override
     public void addServiceEntry( String entry )
     {
-        if( entry != null )
-        {
-            String[] arr = entry.split("-");
-            long key = Long.parseLong( arr[0] );
-            long max = key;
-            if( arr.length ==2 )
-            {
-                max = Long.parseLong( arr[1] );
-            }
-            AsRangeInfo asRangeInfo = new AsRangeInfo( key, max, serviceUrls );
-            _allocations.store( asRangeInfo );
-        }
+        _allocations.store( IpResource.parse( entry ), serviceUrls );
     }
 
     @Override
@@ -89,9 +78,9 @@ public class AsBootstrap implements Bootstrap, Lookup.As, Rfc7484.Handler
         bsFile.loadData( resourceFiles.getInputStream( BootFiles.AS.getKey() ), this );
     }
 
-    public ServiceUrls getServiceUrlsForAs( String autnum )
+    public ServiceUrls getServiceUrlsForAs( IpResource ipResource )
     {
-        return allocations.getServiceUrlsForAs( autnum );
+        return allocations.getServiceUrlsForAs( ipResource );
     }
 
     @Override

@@ -25,7 +25,7 @@ public interface Store
 
     interface As
     {
-        void store( AsRangeInfo asRangeInfo );
+        void store( IpResource ipResource, ServiceUrls serviceUrls );
     }
 
     interface Domain

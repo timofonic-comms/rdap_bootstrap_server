@@ -228,7 +228,7 @@ public class RedirectServlet extends HttpServlet
     {
         public ServiceUrls makeBase( String pathInfo )
         {
-            return asBootstrap.getServiceUrlsForAs( pathInfo.split( "/" )[2] );
+            return asBootstrap.getServiceUrlsForAs( IpResource.parse( pathInfo.split( "/" )[2] ) );
         }
     }
 
@@ -303,7 +303,8 @@ public class RedirectServlet extends HttpServlet
             }
             else if ( pathInfo.endsWith( ".ip6.arpa" ) )
             {
-                return ipV6Bootstrap.getServiceUrlsForIpV6( IpResource.parse( ip6ArpaToIpV6( pathInfo ) ) );
+                return ipV6Bootstrap.getServiceUrlsForIpV6( IpResource.parse(
+                    ip6ArpaToIpV6( pathInfo ) ) );
             }
             // else
             String[] labels = pathInfo.split( "\\." );

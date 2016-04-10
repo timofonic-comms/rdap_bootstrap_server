@@ -84,7 +84,7 @@ public class DefaultBootstrap implements Bootstrap, Lookup.As, Lookup.Domain, Lo
     }
 
     @Override
-    public ServiceUrls getServiceUrlsForAs( String autnum )
+    public ServiceUrls getServiceUrlsForAs( IpResource ipResource )
     {
         return allocations.get( Type.AUTNUM.getPValue() );
     }
