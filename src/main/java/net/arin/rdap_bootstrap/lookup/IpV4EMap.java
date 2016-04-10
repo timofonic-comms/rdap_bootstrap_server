@@ -16,6 +16,7 @@
  */
 package net.arin.rdap_bootstrap.lookup;
 
+import net.arin.rdap_bootstrap.lookup.Store.IpV4;
 import net.ripe.ipresource.IpResource;
 import net.ripe.ipresource.etree.IpResourceIntervalStrategy;
 import net.ripe.ipresource.etree.NestedIntervalMap;
@@ -39,4 +40,18 @@ public class IpV4EMap implements Lookup.IpV4, Store.IpV4
         return allocations.findExactOrFirstLessSpecific( ipResource );
     }
 
+    @Override
+    public IpV4 createLoadContext()
+    {
+        return new IpV4EMap();
+    }
+
+    @Override
+    public void loadWithContext( IpV4 ipV4, boolean success )
+    {
+        if( success )
+        {
+            allocations = ((IpV4EMap)ipV4).allocations;
+        }
+    }
 }

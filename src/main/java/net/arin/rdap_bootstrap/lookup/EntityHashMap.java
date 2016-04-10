@@ -18,6 +18,7 @@ package net.arin.rdap_bootstrap.lookup;
 
 import net.arin.rdap_bootstrap.lookup.Lookup;
 import net.arin.rdap_bootstrap.lookup.Store;
+import net.arin.rdap_bootstrap.lookup.Store.Entity;
 import net.arin.rdap_bootstrap.service.Bootstrap;
 import net.arin.rdap_bootstrap.service.ResourceFiles;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
@@ -43,5 +44,20 @@ public class EntityHashMap implements Lookup.Entity, Store.Entity
     public ServiceUrls getServiceUrlsForEntity( String entity )
     {
         return allocations.get( entity );
+    }
+
+    @Override
+    public Entity createLoadContext()
+    {
+        return new EntityHashMap();
+    }
+
+    @Override
+    public void loadWithContext( Entity entity, boolean success )
+    {
+        if( success )
+        {
+            allocations = ((EntityHashMap)entity).allocations;
+        }
     }
 }

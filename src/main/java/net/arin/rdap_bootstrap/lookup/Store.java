@@ -22,28 +22,33 @@ import net.ripe.ipresource.IpResource;
  */
 public interface Store
 {
+    interface Load<T>
+    {
+        T createLoadContext();
+        void loadWithContext( T t, boolean success);
+    }
 
-    interface As
+    interface As extends Load<As>
     {
         void store( IpResource ipResource, ServiceUrls serviceUrls );
     }
 
-    interface Domain
+    interface Domain extends Load<Domain>
     {
         void store( String domain, ServiceUrls serviceUrls );
     }
 
-    interface Entity
+    interface Entity extends Load<Entity>
     {
         void store( String entity, ServiceUrls serviceUrls );
     }
 
-    interface IpV4
+    interface IpV4 extends Load<IpV4>
     {
         void store( IpResource ipResource, ServiceUrls serviceUrls );
     }
 
-    interface IpV6
+    interface IpV6 extends Load<IpV6>
     {
         void store( IpResource ipResource, ServiceUrls serviceUrls );
     }

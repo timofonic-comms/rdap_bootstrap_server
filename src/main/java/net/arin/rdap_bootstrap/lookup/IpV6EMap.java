@@ -16,6 +16,7 @@
  */
 package net.arin.rdap_bootstrap.lookup;
 
+import net.arin.rdap_bootstrap.lookup.Store.IpV6;
 import net.ripe.ipresource.IpResource;
 import net.ripe.ipresource.etree.IpResourceIntervalStrategy;
 import net.ripe.ipresource.etree.NestedIntervalMap;
@@ -41,4 +42,18 @@ public class IpV6EMap implements Lookup.IpV6, Store.IpV6
         return allocations.findExactOrFirstLessSpecific( ipResource );
     }
 
+    @Override
+    public IpV6 createLoadContext()
+    {
+        return new IpV6EMap();
+    }
+
+    @Override
+    public void loadWithContext( IpV6 ipV6, boolean success )
+    {
+        if( success )
+        {
+            allocations = ((IpV6EMap)ipV6).allocations;
+        }
+    }
 }

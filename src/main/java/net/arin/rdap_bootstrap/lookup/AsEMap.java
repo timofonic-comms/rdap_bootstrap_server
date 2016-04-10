@@ -16,6 +16,7 @@
  */
 package net.arin.rdap_bootstrap.lookup;
 
+import net.arin.rdap_bootstrap.lookup.Store.As;
 import net.ripe.ipresource.IpResource;
 import net.ripe.ipresource.etree.IpResourceIntervalStrategy;
 import net.ripe.ipresource.etree.NestedIntervalMap;
@@ -26,7 +27,7 @@ import net.ripe.ipresource.etree.NestedIntervalMap;
 public class AsEMap implements Lookup.As, Store.As
 {
 
-    private NestedIntervalMap<IpResource,ServiceUrls> allocations = new NestedIntervalMap<IpResource, ServiceUrls>(
+    NestedIntervalMap<IpResource,ServiceUrls> allocations = new NestedIntervalMap<IpResource, ServiceUrls>(
         IpResourceIntervalStrategy.getInstance() );
 
     @Override
@@ -41,4 +42,18 @@ public class AsEMap implements Lookup.As, Store.As
         return allocations.findExactOrFirstLessSpecific( ipResource );
     }
 
+    @Override
+    public As createLoadContext()
+    {
+        return new AsEMap();
+    }
+
+    @Override
+    public void loadWithContext( As as, boolean success )
+    {
+        if( success )
+        {
+            allocations = ((AsEMap)as).allocations;
+        }
+    }
 }
