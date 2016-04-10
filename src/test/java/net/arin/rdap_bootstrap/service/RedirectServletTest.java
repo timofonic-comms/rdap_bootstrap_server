@@ -204,6 +204,15 @@ public class RedirectServletTest
     }
 
     @Test
+    public void testIp6ArpaToIpV6() throws Exception
+    {
+        assertEquals( "2620:0000:0000:0000:0000:0000:0000:0000", RedirectServlet.ip6ArpaToIpV6( "2.6.2.ip6.arpa" ) );
+        assertEquals( "2620:0000:0000:0000:0000:0000:0000:0000", RedirectServlet.ip6ArpaToIpV6( "0.2.6.2.ip6.arpa" ) );
+        assertEquals( "2620:0000:0000:0000:0000:0000:ffff:0000", RedirectServlet.ip6ArpaToIpV6( "0.0.0.0.f.f.f.f.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.2.6.2.ip6.arpa" ) );
+        assertEquals( "2620:0000:0000:0000:0000:0000:ffff:ffff", RedirectServlet.ip6ArpaToIpV6( "f.f.f.f.f.f.f.f.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.2.6.2.ip6.arpa" ) );
+    }
+
+    @Test
     public void testMakeDomainBase() throws Exception
     {
         RedirectServlet servlet = new RedirectServlet();

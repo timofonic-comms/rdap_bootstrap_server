@@ -303,31 +303,36 @@ public class RedirectServlet extends HttpServlet
             }
             else if ( pathInfo.endsWith( ".ip6.arpa" ) )
             {
-                String[] labels = pathInfo.split( "\\." );
-                char[] hex = new char[32];
-                Arrays.fill( hex, '0' );
-                int labelIdx = labels.length - 3;
-                int hexIdx = 0;
-                while ( labelIdx > 0 )
-                {
-                    hex[hexIdx] = labels[labelIdx].charAt( 0 );
-                    labelIdx--;
-                    hexIdx++;
-                }
-                StringBuilder builder = new StringBuilder();
-                for( hexIdx=0;hexIdx<hex.length-4;hexIdx+=4)
-                {
-                    builder.append( hex, hexIdx, 4 );
-                    builder.append( ":" );
-                }
-                builder.append( hex, hexIdx, 4 );
-                return ipV6Bootstrap.getServiceUrlsForIpV6( IpResource.parse( builder.toString() ) );
+                return ipV6Bootstrap.getServiceUrlsForIpV6( IpResource.parse( ip6ArpaToIpV6( pathInfo ) ) );
             }
             // else
             String[] labels = pathInfo.split( "\\." );
             return domainBootstrap.getServiceUrlsForDomain( labels[labels.length - 1] );
         }
 
+    }
+
+    public static String ip6ArpaToIpV6( String pathInfo )
+    {
+        String[] labels = pathInfo.split( "\\." );
+        char[] hex = new char[32];
+        Arrays.fill( hex, '0' );
+        int labelIdx = labels.length - 3;
+        int hexIdx = 0;
+        while ( labelIdx >= 0 )
+        {
+            hex[hexIdx] = labels[labelIdx].charAt( 0 );
+            labelIdx--;
+            hexIdx++;
+        }
+        StringBuilder builder = new StringBuilder();
+        for( hexIdx=0;hexIdx<hex.length-4;hexIdx+=4)
+        {
+            builder.append( hex, hexIdx, 4 );
+            builder.append( ":" );
+        }
+        builder.append( hex, hexIdx, 4 );
+        return builder.toString();
     }
 
     public ServiceUrls makeNameserverBase( String pathInfo )
