@@ -18,6 +18,7 @@ package net.arin.rdap_bootstrap.lookup;
 import com.googlecode.ipv6.IPv6Address;
 import com.googlecode.ipv6.IPv6Network;
 import net.ripe.ipresource.IpRange;
+import net.ripe.ipresource.IpResource;
 
 /**
  * Defines the interfaces for doing lookups.
@@ -60,7 +61,7 @@ public interface Lookup
 
     interface IpV4
     {
-        ServiceUrls getServiceUrlsForIpV4( IpRange ipRange );
+        ServiceUrls getServiceUrlsForIpV4( IpResource ipResource );
     }
 
     interface IpV6

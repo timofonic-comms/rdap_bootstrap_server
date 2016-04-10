@@ -19,6 +19,7 @@ package net.arin.rdap_bootstrap.service;
 import static junit.framework.Assert.assertEquals;
 
 import net.ripe.ipresource.IpRange;
+import net.ripe.ipresource.IpResource;
 import org.junit.Test;
 
 /**
@@ -32,22 +33,29 @@ public class IpV4BootstrapTest
         IpV4Bootstrap v4 = new IpV4Bootstrap();
         v4.loadData( new ResourceFiles() );
 
-        assertEquals( "https://rdap.apnic.net", v4.getServiceUrlsForIpV4( IpRange.parse( "1.0.0.0/8") ).getHttpsUrl() );
-        assertEquals( "https://rdap.apnic.net", v4.getServiceUrlsForIpV4( IpRange.parse( "27.0.0.0/8" ) ).getHttpsUrl() );
-        assertEquals( "https://rdap.db.ripe.net", v4.getServiceUrlsForIpV4( IpRange.parse( "31.0.0.0/8" ) ).getHttpsUrl() );
-        assertEquals( "http://rdap.afrinic.net/rdap", v4.getServiceUrlsForIpV4( IpRange.parse( "41.0.0.0/8" ) ).getHttpUrl() );
-        assertEquals( "https://rdap.lacnic.net/rdap", v4.getServiceUrlsForIpV4( IpRange.parse( "177.0.0.0/8" ) ).getHttpsUrl() );
-        assertEquals( "https://rdap.db.ripe.net", v4.getServiceUrlsForIpV4( IpRange.parse( "188.0.0.0/8" ) ).getHttpsUrl() );
-        assertEquals( "https://rdap.lacnic.net/rdap", v4.getServiceUrlsForIpV4( IpRange.parse( "191.0.0.0/8" ) ).getHttpsUrl() );
+        assertEquals( "https://rdap.apnic.net", v4.getServiceUrlsForIpV4( IpResource.parse(
+            "1.0.0.0/8" ) ).getHttpsUrl() );
+        assertEquals( "https://rdap.apnic.net",
+            v4.getServiceUrlsForIpV4( IpResource.parse( "27.0.0.0/8" ) ).getHttpsUrl() );
+        assertEquals( "https://rdap.db.ripe.net",
+            v4.getServiceUrlsForIpV4( IpResource.parse( "31.0.0.0/8" ) ).getHttpsUrl() );
+        assertEquals( "http://rdap.afrinic.net/rdap",
+            v4.getServiceUrlsForIpV4( IpResource.parse( "41.0.0.0/8" ) ).getHttpUrl() );
+        assertEquals( "https://rdap.lacnic.net/rdap",
+            v4.getServiceUrlsForIpV4( IpResource.parse( "177.0.0.0/8" ) ).getHttpsUrl() );
+        assertEquals( "https://rdap.db.ripe.net",
+            v4.getServiceUrlsForIpV4( IpResource.parse( "188.0.0.0/8" ) ).getHttpsUrl() );
+        assertEquals( "https://rdap.lacnic.net/rdap",
+            v4.getServiceUrlsForIpV4( IpResource.parse( "191.0.0.0/8" ) ).getHttpsUrl() );
 
         // Testing for full prefixes
         assertEquals( "https://rdap.lacnic.net/rdap",
-            v4.getServiceUrlsForIpV4( IpRange.parse( "177.0.0.0/8" ) ).getHttpsUrl() );
+            v4.getServiceUrlsForIpV4( IpResource.parse( "177.0.0.0/8" ) ).getHttpsUrl() );
 
         // Testing for host addresses
         assertEquals( "https://rdap.lacnic.net/rdap",
-            v4.getServiceUrlsForIpV4( IpRange.parse( "177.0.0.1/32" ) ).getHttpsUrl() );
+            v4.getServiceUrlsForIpV4( IpResource.parse( "177.0.0.1/32" ) ).getHttpsUrl() );
         assertEquals( "https://rdap.lacnic.net/rdap",
-            v4.getServiceUrlsForIpV4( IpRange.parse( "177.0.0.1/32" ) ).getHttpsUrl() );
+            v4.getServiceUrlsForIpV4( IpResource.parse( "177.0.0.1/32" ) ).getHttpsUrl() );
     }
 }

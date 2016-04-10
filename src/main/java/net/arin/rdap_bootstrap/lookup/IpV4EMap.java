@@ -16,37 +16,27 @@
  */
 package net.arin.rdap_bootstrap.lookup;
 
-import com.googlecode.ipv6.IPv6Address;
-import com.googlecode.ipv6.IPv6Network;
-import net.ripe.ipresource.IpRange;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Map;
-import java.util.TreeMap;
+import net.ripe.ipresource.IpResource;
+import net.ripe.ipresource.etree.IpResourceIntervalStrategy;
+import net.ripe.ipresource.etree.NestedIntervalMap;
 
 /**
  * @version $Rev$, $Date$
  */
-public class IpV4TreeMap implements Lookup.IpV4, Store.IpV4
+public class IpV4EMap implements Lookup.IpV4, Store.IpV4
 {
-    private TreeMap<IpRange, ServiceUrls> allocations = new TreeMap<IpRange, ServiceUrls>();
+    private NestedIntervalMap<IpResource, ServiceUrls> allocations = new NestedIntervalMap<IpResource, ServiceUrls>(
+        IpResourceIntervalStrategy.getInstance() );
 
     @Override
-    public void store( IpRange ipRange, ServiceUrls serviceUrls )
+    public void store( IpResource ipResource, ServiceUrls serviceUrls )
     {
-        allocations.put( ipRange, serviceUrls );
+        allocations.put( ipResource, serviceUrls );
     }
 
-    public ServiceUrls getServiceUrlsForIpV4( IpRange ipRange )
+    public ServiceUrls getServiceUrlsForIpV4( IpResource ipResource )
     {
-        ServiceUrls retval = null;
-        Map.Entry<IpRange, ServiceUrls> entry = allocations.floorEntry( ipRange );
-        if( entry != null )
-        {
-            retval = entry.getValue();
-        }
-        return retval;
+        return allocations.findExactOrFirstLessSpecific( ipResource );
     }
 
 }

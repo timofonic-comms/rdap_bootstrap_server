@@ -49,6 +49,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.googlecode.ipv6.IPv6Address;
 import com.googlecode.ipv6.IPv6Network;
 import net.ripe.ipresource.IpRange;
+import net.ripe.ipresource.IpResource;
 
 /**
  * @version $Rev$, $Date$
@@ -247,7 +248,7 @@ public class RedirectServlet extends HttpServlet
             pathInfo = pathInfo.substring( 4 );
             if ( pathInfo.indexOf( ":" ) == -1 ) // is not ipv6
             {
-                return ipV4Bootstrap.getServiceUrlsForIpV4( IpRange.parse( pathInfo) );
+                return ipV4Bootstrap.getServiceUrlsForIpV4( IpResource.parse( pathInfo ) );
             }
             // else
             IPv6Address addr = null;

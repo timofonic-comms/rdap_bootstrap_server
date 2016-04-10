@@ -16,23 +16,20 @@
  */
 package net.arin.rdap_bootstrap.service;
 
-import java.util.HashMap;
-import java.util.Set;
-
-import net.arin.rdap_bootstrap.lookup.IpV4TreeMap;
+import net.arin.rdap_bootstrap.lookup.IpV4EMap;
 import net.arin.rdap_bootstrap.lookup.Lookup.IpV4;
 import net.arin.rdap_bootstrap.lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 import net.ripe.ipresource.IpRange;
-import net.ripe.ipresource.UniqueIpResource;
+import net.ripe.ipresource.IpResource;
 
 /**
  * @version $Rev$, $Date$
  */
 public class IpV4Bootstrap implements Bootstrap, IpV4, Rfc7484.Handler
 {
-    private volatile IpV4TreeMap allocations = new IpV4TreeMap();
-    private          IpV4TreeMap _allocations;
+    private volatile IpV4EMap allocations = new IpV4EMap();
+    private IpV4EMap _allocations;
 
     private ServiceUrls serviceUrls;
     private String publication;
@@ -47,7 +44,7 @@ public class IpV4Bootstrap implements Bootstrap, IpV4, Rfc7484.Handler
     @Override
     public void startServices()
     {
-        _allocations = new IpV4TreeMap();
+        _allocations = new IpV4EMap();
     }
 
     @Override
@@ -81,9 +78,9 @@ public class IpV4Bootstrap implements Bootstrap, IpV4, Rfc7484.Handler
     }
 
     @Override
-    public ServiceUrls getServiceUrlsForIpV4( IpRange ipRange )
+    public ServiceUrls getServiceUrlsForIpV4( IpResource ipResource )
     {
-        return allocations.getServiceUrlsForIpV4( ipRange );
+        return allocations.getServiceUrlsForIpV4( ipResource );
     }
 
     @Override

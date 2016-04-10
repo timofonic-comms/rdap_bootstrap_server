@@ -17,6 +17,7 @@ package net.arin.rdap_bootstrap.lookup;
 
 import com.googlecode.ipv6.IPv6Network;
 import net.ripe.ipresource.IpRange;
+import net.ripe.ipresource.IpResource;
 
 /**
  * Defines the interfaces for storing data.
@@ -41,7 +42,7 @@ public interface Store
 
     interface IpV4
     {
-        void store( IpRange ipRange, ServiceUrls serviceUrls );
+        void store( IpResource ipResource, ServiceUrls serviceUrls );
     }
 
     interface IpV6
