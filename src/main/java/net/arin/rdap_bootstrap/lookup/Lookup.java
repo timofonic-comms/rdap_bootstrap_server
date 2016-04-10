@@ -66,8 +66,7 @@ public interface Lookup
 
     interface IpV6
     {
-        ServiceUrls getServiceUrlsForIpV6( IPv6Address addr );
-        ServiceUrls getServiceUrlsForIpV6( IPv6Network net );
+        ServiceUrls getServiceUrlsForIpV6( IpResource ipResource );
     }
 
 }

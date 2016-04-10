@@ -47,6 +47,6 @@ public interface Store
 
     interface IpV6
     {
-        void store( IPv6Network iPv6Network, ServiceUrls serviceUrls );
+        void store( IpResource ipResource, ServiceUrls serviceUrls );
     }
 }

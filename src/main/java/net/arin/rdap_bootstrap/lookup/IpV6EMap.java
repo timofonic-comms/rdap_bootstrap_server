@@ -24,6 +24,10 @@ import net.arin.rdap_bootstrap.service.Bootstrap;
 import net.arin.rdap_bootstrap.service.ResourceFiles;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 import net.arin.rdap_bootstrap.service.Rfc7484;
+import net.ripe.ipresource.IpRange;
+import net.ripe.ipresource.IpResource;
+import net.ripe.ipresource.etree.IpResourceIntervalStrategy;
+import net.ripe.ipresource.etree.NestedIntervalMap;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -31,36 +35,21 @@ import java.util.TreeMap;
 /**
  * @version $Rev$, $Date$
  */
-public class IpV6TreeMap implements Lookup.IpV6, Store.IpV6
+public class IpV6EMap implements Lookup.IpV6, Store.IpV6
 {
-    private TreeMap<Long, ServiceUrls> allocations = new TreeMap<Long, ServiceUrls>();
+    private NestedIntervalMap<IpResource,ServiceUrls> allocations = new NestedIntervalMap<IpResource, ServiceUrls>(
+        IpResourceIntervalStrategy.getInstance() );
 
     @Override
-    public void store( IPv6Network iPv6Network, ServiceUrls serviceUrls )
+    public void store( IpResource ipResource, ServiceUrls serviceUrls )
     {
-        long key = iPv6Network.getFirst().getHighBits();
-        allocations.put( key, serviceUrls );
+        allocations.put( ipResource, serviceUrls );
     }
 
-    private ServiceUrls getServiceUrls( long prefix )
+    @Override
+    public ServiceUrls getServiceUrlsForIpV6( IpResource ipResource )
     {
-        ServiceUrls retval = null;
-        Map.Entry<Long, ServiceUrls> entry = allocations.floorEntry( prefix );
-        if ( entry != null )
-        {
-            retval = entry.getValue();
-        }
-        return retval;
-    }
-
-    public ServiceUrls getServiceUrlsForIpV6( IPv6Address addr )
-    {
-        return getServiceUrls( addr.getHighBits() );
-    }
-
-    public ServiceUrls getServiceUrlsForIpV6( IPv6Network net )
-    {
-        return getServiceUrls( net.getFirst().getHighBits() );
+        return allocations.findExactOrFirstLessSpecific( ipResource );
     }
 
 }

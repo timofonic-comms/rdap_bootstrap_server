@@ -251,17 +251,7 @@ public class RedirectServlet extends HttpServlet
                 return ipV4Bootstrap.getServiceUrlsForIpV4( IpResource.parse( pathInfo ) );
             }
             // else
-            IPv6Address addr = null;
-            if ( pathInfo.indexOf( "/" ) == -1 )
-            {
-                addr = IPv6Address.fromString( pathInfo );
-            }
-            else
-            {
-                IPv6Network net = IPv6Network.fromString( pathInfo );
-                addr = net.getFirst();
-            }
-            return ipV6Bootstrap.getServiceUrlsForIpV6( addr );
+            return ipV6Bootstrap.getServiceUrlsForIpV6( IpResource.parse( pathInfo ) );
         }
     }
 
@@ -311,7 +301,7 @@ public class RedirectServlet extends HttpServlet
                 s += words[words.length - 1];// el último sin DELIMITER
                 s += "/" + BITS_PER_WORD * n;
 
-                return ipV4Bootstrap.getServiceUrlsForIpV4( IpRange.parse( s ) );
+                return ipV4Bootstrap.getServiceUrlsForIpV4( IpResource.parse( s ) );
 
             }
             else if ( pathInfo.endsWith( ".ip6.arpa" ) )
@@ -353,7 +343,8 @@ public class RedirectServlet extends HttpServlet
                         byteIdx++;
                     }
                 }
-                return ipV6Bootstrap.getServiceUrlsForIpV6( IPv6Address.fromByteArray( bytes ) );
+                return ipV6Bootstrap.getServiceUrlsForIpV6(
+                    IpResource.parse( IPv6Address.fromByteArray( bytes ).toString() ) );
             }
             // else
             String[] labels = pathInfo.split( "\\." );

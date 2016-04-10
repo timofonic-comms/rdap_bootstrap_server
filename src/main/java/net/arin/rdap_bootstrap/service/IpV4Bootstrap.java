@@ -68,7 +68,7 @@ public class IpV4Bootstrap implements Bootstrap, IpV4, Rfc7484.Handler
     @Override
     public void addServiceEntry( String entry )
     {
-        _allocations.store( IpRange.parse( entry ), serviceUrls );
+        _allocations.store( IpResource.parse( entry ), serviceUrls );
     }
 
     @Override

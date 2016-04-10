@@ -18,6 +18,7 @@ package net.arin.rdap_bootstrap.service;
 
 import com.googlecode.ipv6.IPv6Address;
 import com.googlecode.ipv6.IPv6Network;
+import net.ripe.ipresource.IpResource;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
@@ -41,20 +42,26 @@ public class IpV6BootstrapTest
         IpV6Bootstrap v6 = new IpV6Bootstrap();
         v6.loadData( new ResourceFiles() );
 
-        assertEquals( ARIN, v6.getServiceUrlsForIpV6( IPv6Address.fromString( "2620:0000:0000:0000:0000:0000:0000:0000" ) ).getHttpUrl() );
-        assertEquals( ARIN, v6.getServiceUrlsForIpV6( IPv6Address.fromString( "2620:0000:0000:0000:0000:0000:0000:ffff" ) ).getHttpUrl() );
-        assertEquals( ARIN, v6.getServiceUrlsForIpV6( IPv6Address.fromString( "2620:01ff:ffff:ffff:ffff:ffff:ffff:0000" ) ).getHttpUrl() );
-        assertEquals( ARIN, v6.getServiceUrlsForIpV6( IPv6Address.fromString( "2620:01ff:ffff:ffff:ffff:ffff:ffff:ffff" ) ).getHttpUrl() );
-        assertEquals( LACNIC, v6.getServiceUrlsForIpV6( IPv6Address.fromString( "2800:0000:0000:0000:0000:0000:0000:0000" ) ).getHttpsUrl() );
-        assertEquals( LACNIC, v6.getServiceUrlsForIpV6( IPv6Address.fromString( "2800:0000:0000:0000:0000:0000:0000:ffff" ) ).getHttpsUrl() );
-        assertEquals( LACNIC, v6.getServiceUrlsForIpV6( IPv6Address.fromString( "280f:ffff:ffff:ffff:ffff:ffff:ffff:0000" ) ).getHttpsUrl() );
-        assertEquals( LACNIC, v6.getServiceUrlsForIpV6( IPv6Address.fromString( "280f:ffff:ffff:ffff:ffff:ffff:ffff:ffff" ) ).getHttpsUrl() );
-        //TODO renable when their server are put back in the bootstrap files
-        //assertEquals( IANA, v6.getServiceUrls( IPv6Address.fromString( "2001:0000::1" ) ).getHttpUrl() );
-        assertEquals( APNIC, v6.getServiceUrlsForIpV6( IPv6Network.fromString( "2001:0200::/23" ) ).getHttpsUrl() );
-        assertEquals( RIPE, v6.getServiceUrlsForIpV6( IPv6Address.fromString( "2a00:0000:0000:0000:0000:0000:0000:0000" ) ).getHttpsUrl() );
-        assertEquals( RIPE, v6.getServiceUrlsForIpV6( IPv6Address.fromString( "2a0f:ffff:ffff:ffff:ffff:ffff:ffff:ffff" ) ).getHttpsUrl() );
-        assertEquals( AFRINIC, v6.getServiceUrlsForIpV6( IPv6Network.fromString( "2c00:0000::/12" ) ).getHttpUrl() );
-        assertEquals( LACNIC, v6.getServiceUrlsForIpV6( IPv6Network.fromString( "2800:0000::/12" ) ).getHttpsUrl() );
+        assertEquals( ARIN, v6.getServiceUrlsForIpV6(
+            IpResource.parse( "2620:0000:0000:0000:0000:0000:0000:0000" ) ).getHttpUrl() );
+        assertEquals( ARIN, v6.getServiceUrlsForIpV6( IpResource.parse( "2620:0000:0000:0000:0000:0000:0000:ffff" ) ).getHttpUrl() );
+        assertEquals( ARIN, v6.getServiceUrlsForIpV6(
+            IpResource.parse( "2620:01ff:ffff:ffff:ffff:ffff:ffff:0000" ) ).getHttpUrl() );
+        assertEquals( ARIN, v6.getServiceUrlsForIpV6(
+            IpResource.parse( "2620:01ff:ffff:ffff:ffff:ffff:ffff:ffff" ) ).getHttpUrl() );
+        assertEquals( LACNIC, v6.getServiceUrlsForIpV6(
+            IpResource.parse( "2800:0000:0000:0000:0000:0000:0000:0000" ) ).getHttpsUrl() );
+        assertEquals( LACNIC, v6.getServiceUrlsForIpV6(
+            IpResource.parse( "2800:0000:0000:0000:0000:0000:0000:ffff" ) ).getHttpsUrl() );
+        assertEquals( LACNIC, v6.getServiceUrlsForIpV6(
+            IpResource.parse( "280f:ffff:ffff:ffff:ffff:ffff:ffff:0000" ) ).getHttpsUrl() );
+        assertEquals( LACNIC, v6.getServiceUrlsForIpV6(
+            IpResource.parse( "280f:ffff:ffff:ffff:ffff:ffff:ffff:ffff" ) ).getHttpsUrl() );
+        assertEquals( APNIC,
+            v6.getServiceUrlsForIpV6( IpResource.parse( "2001:0200::/23" ) ).getHttpsUrl() );
+        assertEquals( RIPE, v6.getServiceUrlsForIpV6( IpResource.parse( "2a00:0000:0000:0000:0000:0000:0000:0000" ) ).getHttpsUrl() );
+        assertEquals( RIPE, v6.getServiceUrlsForIpV6( IpResource.parse( "2a0f:ffff:ffff:ffff:ffff:ffff:ffff:ffff" ) ).getHttpsUrl() );
+        assertEquals( AFRINIC, v6.getServiceUrlsForIpV6( IpResource.parse( "2c00:0000::/12" ) ).getHttpUrl() );
+        assertEquals( LACNIC, v6.getServiceUrlsForIpV6( IpResource.parse( "2800:0000::/12" ) ).getHttpsUrl() );
     }
 }

@@ -111,13 +111,7 @@ public class DefaultBootstrap implements Bootstrap, Lookup.As, Lookup.Domain, Lo
     }
 
     @Override
-    public ServiceUrls getServiceUrlsForIpV6( IPv6Address addr )
-    {
-        return allocations.get( Type.IP.getPValue() );
-    }
-
-    @Override
-    public ServiceUrls getServiceUrlsForIpV6( IPv6Network net )
+    public ServiceUrls getServiceUrlsForIpV6( IpResource ipResource )
     {
         return allocations.get( Type.IP.getPValue() );
     }
