@@ -46,9 +46,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.googlecode.ipv6.IPv6Address;
-import com.googlecode.ipv6.IPv6Network;
-import net.ripe.ipresource.IpRange;
 import net.ripe.ipresource.IpResource;
 
 /**
@@ -307,44 +304,24 @@ public class RedirectServlet extends HttpServlet
             else if ( pathInfo.endsWith( ".ip6.arpa" ) )
             {
                 String[] labels = pathInfo.split( "\\." );
-                byte[] bytes = new byte[16];
-                Arrays.fill( bytes, ( byte ) 0 );
+                char[] hex = new char[32];
+                Arrays.fill( hex, '0' );
                 int labelIdx = labels.length - 3;
-                int byteIdx = 0;
-                int idxJump = 1;
+                int hexIdx = 0;
                 while ( labelIdx > 0 )
                 {
-                    char ch = labels[labelIdx].charAt( 0 );
-                    byte value = 0;
-                    if ( ch >= '0' && ch <= '9' )
-                    {
-                        value = ( byte ) ( ch - '0' );
-                    }
-                    else if ( ch >= 'A' && ch <= 'F' )
-                    {
-                        value = ( byte ) ( ch - ( 'A' - 0xaL ) );
-                    }
-                    else if ( ch >= 'a' && ch <= 'f' )
-                    {
-                        value = ( byte ) ( ch - ( 'a' - 0xaL ) );
-                    }
-                    if ( idxJump % 2 == 1 )
-                    {
-                        bytes[byteIdx] = ( byte ) ( value << 4 );
-                    }
-                    else
-                    {
-                        bytes[byteIdx] = ( byte ) ( bytes[byteIdx] + value );
-                    }
+                    hex[hexIdx] = labels[labelIdx].charAt( 0 );
                     labelIdx--;
-                    idxJump++;
-                    if ( idxJump % 2 == 1 )
-                    {
-                        byteIdx++;
-                    }
+                    hexIdx++;
                 }
-                return ipV6Bootstrap.getServiceUrlsForIpV6(
-                    IpResource.parse( IPv6Address.fromByteArray( bytes ).toString() ) );
+                StringBuilder builder = new StringBuilder();
+                for( hexIdx=0;hexIdx<hex.length-4;hexIdx+=4)
+                {
+                    builder.append( hex, hexIdx, 4 );
+                    builder.append( ":" );
+                }
+                builder.append( hex, hexIdx, 4 );
+                return ipV6Bootstrap.getServiceUrlsForIpV6( IpResource.parse( builder.toString() ) );
             }
             // else
             String[] labels = pathInfo.split( "\\." );

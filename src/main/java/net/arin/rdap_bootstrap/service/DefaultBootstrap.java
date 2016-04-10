@@ -16,13 +16,10 @@
  */
 package net.arin.rdap_bootstrap.service;
 
-import com.googlecode.ipv6.IPv6Address;
-import com.googlecode.ipv6.IPv6Network;
 import net.arin.rdap_bootstrap.lookup.Lookup;
 import net.arin.rdap_bootstrap.lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.lookup.Lookup.Type;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
-import net.ripe.ipresource.IpRange;
 import net.ripe.ipresource.IpResource;
 
 import java.util.HashMap;

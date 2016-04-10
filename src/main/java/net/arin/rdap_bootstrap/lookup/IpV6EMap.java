@@ -16,21 +16,10 @@
  */
 package net.arin.rdap_bootstrap.lookup;
 
-import com.googlecode.ipv6.IPv6Address;
-import com.googlecode.ipv6.IPv6Network;
-import net.arin.rdap_bootstrap.lookup.Lookup;
-import net.arin.rdap_bootstrap.lookup.Store;
-import net.arin.rdap_bootstrap.service.Bootstrap;
-import net.arin.rdap_bootstrap.service.ResourceFiles;
-import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
-import net.arin.rdap_bootstrap.service.Rfc7484;
-import net.ripe.ipresource.IpRange;
 import net.ripe.ipresource.IpResource;
 import net.ripe.ipresource.etree.IpResourceIntervalStrategy;
 import net.ripe.ipresource.etree.NestedIntervalMap;
 
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * @version $Rev$, $Date$

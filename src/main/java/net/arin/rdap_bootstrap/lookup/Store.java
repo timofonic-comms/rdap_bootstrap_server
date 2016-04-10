@@ -15,8 +15,6 @@
  */
 package net.arin.rdap_bootstrap.lookup;
 
-import com.googlecode.ipv6.IPv6Network;
-import net.ripe.ipresource.IpRange;
 import net.ripe.ipresource.IpResource;
 
 /**

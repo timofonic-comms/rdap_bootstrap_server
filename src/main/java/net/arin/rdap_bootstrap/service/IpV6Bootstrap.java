@@ -21,8 +21,6 @@ import net.arin.rdap_bootstrap.lookup.Lookup.IpV6;
 import net.arin.rdap_bootstrap.lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
 
-import com.googlecode.ipv6.IPv6Address;
-import com.googlecode.ipv6.IPv6Network;
 import net.ripe.ipresource.IpResource;
 
 /**
