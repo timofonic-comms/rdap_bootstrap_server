@@ -520,4 +520,5 @@ public class RedirectServlet extends HttpServlet
             defaultBootstrap.loadData( resourceFiles );
         }
     }
+
 }
