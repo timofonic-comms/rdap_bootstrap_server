@@ -17,6 +17,7 @@ package net.arin.rdap_bootstrap.service;
 import net.arin.rdap_bootstrap.Constants;
 import net.arin.rdap_bootstrap.lookup.Lookup;
 import net.arin.rdap_bootstrap.lookup.ServiceUrls;
+import net.arin.rdap_bootstrap.lookup.Store;
 import net.ripe.ipresource.IpResource;
 
 import java.util.ArrayList;
@@ -30,16 +31,24 @@ import java.util.logging.Logger;
  */
 public abstract class RegistryChain
 {
-    public static final String propPrefix = Constants.PROPERTY_PREFIX + "registry_chain.";
+    public static final String AS_7484      = "as_7487";
+    public static final String IPV4_7484    = "ipv4_7484";
+    public static final String IPV6_7484    = "ipv6_7484";
+    public static final String DOMAIN_7484  = "domain_7484";
+    public static final String ENTITY_7484  = "entity_7484";
+    public static final String DEFAULT_7484 = "default_7484";
 
-    private String configedRegistries = null;
-    private Properties properties = null;
+    private static final String rcPropPrefix  = Constants.PROPERTY_PREFIX + "registry_chain.";
+    private static final String regPropPrefix = Constants.PROPERTY_PREFIX + "registry.";
+
+    protected String[] configedRegistries = null;
+    protected Properties properties = null;
 
     private static Logger logger = Logger.getLogger( "RegistryChain" );
 
     public RegistryChain( String configedRegistries, Properties properties )
     {
-        this.configedRegistries = configedRegistries;
+        this.configedRegistries = configedRegistries( configedRegistries );
         this.properties = properties;
     }
 
@@ -51,9 +60,9 @@ public abstract class RegistryChain
         {
             String propName =  (String)entry.getKey();
             String propValue = (String)entry.getValue();
-            if( propName.startsWith( propPrefix ) )
+            if( propName.startsWith( rcPropPrefix ) )
             {
-                String rcType = propName.substring( propPrefix.length() );
+                String rcType = propName.substring( rcPropPrefix.length() );
                 if( rcType.equals( "as" ) )
                 {
                     As as = new As( propValue, properties );
@@ -86,6 +95,32 @@ public abstract class RegistryChain
             }
         }
         return chains;
+    }
+
+    public static String[] configedRegistries( String configedRegistries )
+    {
+        return configedRegistries.split( "(,|\\s+)" );
+    }
+
+    public static List<Registry> makeRegistries( String[] configedRegistries, Properties properties )
+    {
+        ArrayList<Registry> registries = new ArrayList<Registry>();
+        for ( String s : configedRegistries )
+        {
+            Properties regProps = new Properties();
+            String prefix = regPropPrefix + s;
+            for ( Object key : properties.keySet() )
+            {
+                String propName = (String)key;
+                if( propName.startsWith( prefix ) )
+                {
+                    regProps.setProperty( propName, properties.getProperty( propName ) );
+                }
+            }
+            Registry r = new Registry( s, regProps );
+            registries.add( r );
+        }
+        return registries;
     }
 
     public static class As extends RegistryChain implements Lookup.As
@@ -210,6 +245,82 @@ public abstract class RegistryChain
                 }
             }
             return retval;
+        }
+    }
+
+    public static class Registry
+    {
+        private String name;
+        private Properties properties;
+        private Lookup lookup;
+        private Store  store;
+        private Source source;
+        private Format format;
+
+        public Registry( String name, Properties properties )
+        {
+            this.name = name;
+            this.properties = properties;
+        }
+
+        public Properties getProperties()
+        {
+            return properties;
+        }
+
+        public void setProperties( Properties properties )
+        {
+            this.properties = properties;
+        }
+
+        public Lookup getLookup()
+        {
+            return lookup;
+        }
+
+        public void setLookup( Lookup lookup )
+        {
+            this.lookup = lookup;
+        }
+
+        public Store getStore()
+        {
+            return store;
+        }
+
+        public void setStore( Store store )
+        {
+            this.store = store;
+        }
+
+        public Source getSource()
+        {
+            return source;
+        }
+
+        public void setSource( Source source )
+        {
+            this.source = source;
+        }
+
+        public Format getFormat()
+        {
+            return format;
+        }
+
+        public void setFormat( Format format )
+        {
+            this.format = format;
+        }
+
+        public String getName()
+        {
+            return name;
+        }
+
+        public void setName( String name )
+        {
+            this.name = name;
         }
     }
 }
