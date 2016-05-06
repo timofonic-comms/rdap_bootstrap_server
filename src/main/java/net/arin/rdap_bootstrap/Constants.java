@@ -21,4 +21,6 @@ package net.arin.rdap_bootstrap;
 public class Constants
 {
     public final static String PROPERTY_PREFIX = "arin.rdapbootstrap.";
+    public final static String DATA_DIR_PROP_NAME = PROPERTY_PREFIX + "data_directory";
+    public final static String SOURCE_SUBPROPNAME = "source";
 }

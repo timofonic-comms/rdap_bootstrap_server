@@ -15,31 +15,53 @@
  */
 package net.arin.rdap_bootstrap.source;
 
+import net.arin.rdap_bootstrap.Constants;
 import net.arin.rdap_bootstrap.format.Format;
 import net.arin.rdap_bootstrap.lookup.Store;
+import net.arin.rdap_bootstrap.service.Registry;
+
+import java.io.File;
 
 /**
  * A source type for a file on disk
  */
 public class FileSource implements Source
 {
-    private Store store;
-    private Format format;
+    private Registry registry;
+    File dataFile;
 
     @Override
-    public void setStore( Store store )
+    public void configFromRegistry( Registry registry )
     {
-        this.store = store;
+        this.registry = registry;
+        String dirName = registry.getProperty( Constants.DATA_DIR_PROP_NAME );
+        File dataDirectory = new File( dirName );
+        if( !dataDirectory.exists() )
+        {
+            throw new RuntimeException( "'" + dirName + "' does not exist."  );
+        }
+        if( !dataDirectory.isDirectory() )
+        {
+            throw new RuntimeException( "'" + dirName + "' is not a directory."  );
+        }
+        String dataFileName = registry.getProperty( Constants.SOURCE_SUBPROPNAME );
+        dataFile = new File( dataDirectory, dataFileName );
+        if( !dataFile.exists() )
+        {
+            throw new RuntimeException( "'" + dataFileName + "' does not exist."  );
+        }
+        if( !dataFile.isFile() )
+        {
+            throw new RuntimeException( "'" + dataFileName + "' is not a file."  );
+        }
+        if( !dataFile.canRead() )
+        {
+            throw new RuntimeException( "'" + dataFileName + "' is not readable."  );
+        }
     }
 
     @Override
-    public void setFormat( Format format )
-    {
-        this.format = format;
-    }
-
-    @Override
-    public void execute()
+    public void execute( boolean background )
     {
 
     }
