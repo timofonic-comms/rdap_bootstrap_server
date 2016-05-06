@@ -41,27 +41,27 @@ public interface Lookup
         }
     }
 
-    interface As
+    interface As extends Lookup
     {
         ServiceUrls getServiceUrlsForAs( IpResource ipResource);
     }
 
-    interface Domain
+    interface Domain extends Lookup
     {
         ServiceUrls getServiceUrlsForDomain( String domain );
     }
 
-    interface Entity
+    interface Entity extends Lookup
     {
         ServiceUrls getServiceUrlsForEntity( String entity );
     }
 
-    interface IpV4
+    interface IpV4 extends Lookup
     {
         ServiceUrls getServiceUrlsForIpV4( IpResource ipResource );
     }
 
-    interface IpV6
+    interface IpV6 extends Lookup
     {
         ServiceUrls getServiceUrlsForIpV6( IpResource ipResource );
     }

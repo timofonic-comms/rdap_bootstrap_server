@@ -43,13 +43,13 @@ public class IpV6EMap implements Lookup.IpV6, Store.IpV6
     }
 
     @Override
-    public IpV6 createLoadContext()
+    public Store.IpV6 createLoadContext()
     {
         return new IpV6EMap();
     }
 
     @Override
-    public void loadWithContext( IpV6 ipV6, boolean success )
+    public void loadWithContext( Store.IpV6 ipV6, boolean success )
     {
         if( success )
         {

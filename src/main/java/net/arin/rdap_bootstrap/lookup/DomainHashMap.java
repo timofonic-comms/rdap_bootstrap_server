@@ -16,8 +16,6 @@
  */
 package net.arin.rdap_bootstrap.lookup;
 
-import net.arin.rdap_bootstrap.lookup.Store.Domain;
-
 import java.util.HashMap;
 
 /**
@@ -56,13 +54,13 @@ public class DomainHashMap implements Lookup.Domain, Store.Domain
     }
 
     @Override
-    public Domain createLoadContext()
+    public Store.Domain createLoadContext()
     {
         return new DomainHashMap();
     }
 
     @Override
-    public void loadWithContext( Domain domain, boolean success )
+    public void loadWithContext( Store.Domain domain, boolean success )
     {
         if( success )
         {

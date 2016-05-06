@@ -43,13 +43,13 @@ public class AsEMap implements Lookup.As, Store.As
     }
 
     @Override
-    public As createLoadContext()
+    public Store.As createLoadContext()
     {
         return new AsEMap();
     }
 
     @Override
-    public void loadWithContext( As as, boolean success )
+    public void loadWithContext( Store.As as, boolean success )
     {
         if( success )
         {

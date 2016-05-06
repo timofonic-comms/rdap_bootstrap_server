@@ -15,6 +15,7 @@
  */
 package net.arin.rdap_bootstrap.lookup;
 
+import net.arin.rdap_bootstrap.lookup.Lookup.Type;
 import net.ripe.ipresource.IpResource;
 
 /**
@@ -28,28 +29,33 @@ public interface Store
         void loadWithContext( T t, boolean success);
     }
 
-    interface As extends Load<As>
+    interface As extends Store, Load<As>
     {
         void store( IpResource ipResource, ServiceUrls serviceUrls );
     }
 
-    interface Domain extends Load<Domain>
+    interface Domain extends Store, Load<Domain>
     {
         void store( String domain, ServiceUrls serviceUrls );
     }
 
-    interface Entity extends Load<Entity>
+    interface Entity extends Store, Load<Entity>
     {
         void store( String entity, ServiceUrls serviceUrls );
     }
 
-    interface IpV4 extends Load<IpV4>
+    interface IpV4 extends Store, Load<IpV4>
     {
         void store( IpResource ipResource, ServiceUrls serviceUrls );
     }
 
-    interface IpV6 extends Load<IpV6>
+    interface IpV6 extends Store, Load<IpV6>
     {
         void store( IpResource ipResource, ServiceUrls serviceUrls );
+    }
+
+    interface Default extends Store, Load<Default>
+    {
+        void store( Type type, ServiceUrls serviceUrls );
     }
 }

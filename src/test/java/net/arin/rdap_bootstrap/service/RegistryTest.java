@@ -42,10 +42,10 @@ public class RegistryTest
             .makeRegistries( null, new String[]{"as_7484", "ipv4_7484"}, props );
         assertEquals( registries.size(), 2 );
         assertEquals( registries.get( "as_7484" ).getName(), "as_7484" );
-        assertEquals( registries.get( "as_7484" ).getProperty( "type" ), "foo" );
+        assertEquals( registries.get( "as_7484" ).getType(), "foo" );
         assertEquals( registries, registries.get( "as_7484" ).getRegistries() );
         assertEquals( registries.get( "ipv4_7484" ).getName(), "ipv4_7484" );
-        assertEquals( registries.get( "ipv4_7484" ).getProperty( "type"), "bar" );
+        assertEquals( registries.get( "ipv4_7484" ).getType(), "bar" );
         assertEquals( registries, registries.get( "ipv4_7484" ).getRegistries() );
     }
 }

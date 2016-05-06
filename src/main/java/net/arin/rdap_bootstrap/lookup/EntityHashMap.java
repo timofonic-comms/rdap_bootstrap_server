@@ -47,13 +47,13 @@ public class EntityHashMap implements Lookup.Entity, Store.Entity
     }
 
     @Override
-    public Entity createLoadContext()
+    public Store.Entity createLoadContext()
     {
         return new EntityHashMap();
     }
 
     @Override
-    public void loadWithContext( Entity entity, boolean success )
+    public void loadWithContext( Store.Entity entity, boolean success )
     {
         if( success )
         {

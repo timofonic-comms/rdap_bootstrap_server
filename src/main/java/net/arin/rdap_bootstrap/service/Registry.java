@@ -15,6 +15,12 @@
 package net.arin.rdap_bootstrap.service;
 
 import net.arin.rdap_bootstrap.Constants;
+import net.arin.rdap_bootstrap.lookup.AsEMap;
+import net.arin.rdap_bootstrap.lookup.DefaultHashMap;
+import net.arin.rdap_bootstrap.lookup.DomainHashMap;
+import net.arin.rdap_bootstrap.lookup.EntityHashMap;
+import net.arin.rdap_bootstrap.lookup.IpV4EMap;
+import net.arin.rdap_bootstrap.lookup.IpV6EMap;
 import net.arin.rdap_bootstrap.lookup.Lookup;
 import net.arin.rdap_bootstrap.lookup.Store;
 
@@ -36,6 +42,7 @@ public class Registry
     public static final String DEFAULT_7484 = "default_7484";
 
     private static final String regPropPrefix = Constants.PROPERTY_PREFIX + "registry.";
+    private static final String typePropName  = "type";
 
     private String name;
     private String propertyPrefix;
@@ -53,6 +60,54 @@ public class Registry
         this.propertyPrefix = propertyPrefix;
         this.properties = properties;
         this.registries = registries;
+    }
+
+    public void config()
+    {
+        String type = getType();
+        switch ( type )
+        {
+            case AS_7484:
+                AsEMap asEMap = new AsEMap();
+                store = asEMap;
+                lookup = asEMap;
+                break;
+            case IPV4_7484:
+                IpV4EMap ipV4EMap = new IpV4EMap();
+                store = ipV4EMap;
+                lookup = ipV4EMap;
+                break;
+            case IPV6_7484:
+                IpV6EMap ipV6EMap = new IpV6EMap();
+                store = ipV6EMap;
+                lookup = ipV6EMap;
+                break;
+            case DOMAIN_7484:
+                DomainHashMap domainHashMap = new DomainHashMap();
+                store = domainHashMap;
+                lookup = domainHashMap;
+                break;
+            case ENTITY_7484:
+                EntityHashMap entityHashMap = new EntityHashMap();
+                store = entityHashMap;
+                lookup = entityHashMap;
+                break;
+            case DEFAULT_7484:
+                DefaultHashMap defaultHashMap = new DefaultHashMap();
+                store = defaultHashMap;
+                lookup = defaultHashMap;
+                break;
+        }
+    }
+
+    public String getType()
+    {
+        String retval = getProperty( typePropName );
+        if( retval == null || retval.length() == 0 )
+        {
+            throw new RuntimeException( "Registry type is empty or null" );
+        }
+        return retval;
     }
 
     public static Map<String,Registry> makeRegistries( Map<String,Registry> registries, String[] registryNames, Properties properties )

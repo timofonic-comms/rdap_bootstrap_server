@@ -41,13 +41,13 @@ public class IpV4EMap implements Lookup.IpV4, Store.IpV4
     }
 
     @Override
-    public IpV4 createLoadContext()
+    public Store.IpV4 createLoadContext()
     {
         return new IpV4EMap();
     }
 
     @Override
-    public void loadWithContext( IpV4 ipV4, boolean success )
+    public void loadWithContext( Store.IpV4 ipV4, boolean success )
     {
         if( success )
         {
