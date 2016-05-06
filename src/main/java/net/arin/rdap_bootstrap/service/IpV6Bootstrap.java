@@ -21,7 +21,6 @@ import net.arin.rdap_bootstrap.lookup.IpV6EMap;
 import net.arin.rdap_bootstrap.lookup.Lookup.IpV6;
 import net.arin.rdap_bootstrap.lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
-
 import net.ripe.ipresource.IpResource;
 
 /**

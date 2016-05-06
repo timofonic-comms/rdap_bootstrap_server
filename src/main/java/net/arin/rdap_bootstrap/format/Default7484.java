@@ -16,17 +16,11 @@
  */
 package net.arin.rdap_bootstrap.format;
 
-import net.arin.rdap_bootstrap.lookup.Lookup;
 import net.arin.rdap_bootstrap.lookup.Lookup.Type;
 import net.arin.rdap_bootstrap.lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.lookup.Store;
-import net.arin.rdap_bootstrap.service.Bootstrap;
-import net.arin.rdap_bootstrap.service.ResourceFiles;
-import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
-import net.ripe.ipresource.IpResource;
 
 import java.io.InputStream;
-import java.util.HashMap;
 
 public class Default7484 implements Format, Rfc7484.Handler
 {

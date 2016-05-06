@@ -21,7 +21,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 
 /**
  * An abstraction for generically processing the JSON bootstrap files.

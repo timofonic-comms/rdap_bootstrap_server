@@ -15,8 +15,8 @@
  */
 package net.arin.rdap_bootstrap.source;
 
-import net.arin.rdap_bootstrap.lookup.Store;
 import net.arin.rdap_bootstrap.format.Format;
+import net.arin.rdap_bootstrap.lookup.Store;
 
 /**
  * A source type for a file on disk

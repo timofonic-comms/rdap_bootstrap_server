@@ -16,7 +16,6 @@
  */
 package net.arin.rdap_bootstrap.lookup;
 
-import net.arin.rdap_bootstrap.lookup.Store.IpV4;
 import net.ripe.ipresource.IpResource;
 import net.ripe.ipresource.etree.IpResourceIntervalStrategy;
 import net.ripe.ipresource.etree.NestedIntervalMap;

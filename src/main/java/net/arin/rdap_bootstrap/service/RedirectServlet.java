@@ -16,6 +16,25 @@
  */
 package net.arin.rdap_bootstrap.service;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import net.arin.rdap_bootstrap.Constants;
+import net.arin.rdap_bootstrap.json.Notice;
+import net.arin.rdap_bootstrap.json.Response;
+import net.arin.rdap_bootstrap.lookup.Lookup;
+import net.arin.rdap_bootstrap.lookup.Lookup.Type;
+import net.arin.rdap_bootstrap.lookup.ServiceUrls;
+import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
+import net.arin.rdap_bootstrap.service.Statistics.UrlHits;
+import net.ripe.ipresource.IpResource;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -26,27 +45,6 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import net.arin.rdap_bootstrap.Constants;
-import net.arin.rdap_bootstrap.json.Notice;
-import net.arin.rdap_bootstrap.json.Response;
-import net.arin.rdap_bootstrap.lookup.Lookup;
-import net.arin.rdap_bootstrap.lookup.Lookup.Type;
-import net.arin.rdap_bootstrap.lookup.ServiceUrls;
-import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
-import net.arin.rdap_bootstrap.service.Statistics.UrlHits;
-
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import net.ripe.ipresource.IpResource;
 
 /**
  * @version $Rev$, $Date$

@@ -15,8 +15,8 @@
  */
 package net.arin.rdap_bootstrap.source;
 
-import net.arin.rdap_bootstrap.lookup.Store;
 import net.arin.rdap_bootstrap.format.Format;
+import net.arin.rdap_bootstrap.lookup.Store;
 
 /**
  * Defines the behavior for a registry source
