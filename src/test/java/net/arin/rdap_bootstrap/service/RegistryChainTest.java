@@ -105,8 +105,8 @@ public class RegistryChainTest
         List<Registry> registries = RegistryChain.makeRegistries( new String[]{ "as_7484", "ipv4_7484" }, props );
         assertEquals( registries.size(), 2 );
         assertEquals( registries.get( 0 ).getName(), "as_7484" );
-        assertEquals( registries.get( 0 ).getProperties().size(), 2 );
+        assertEquals( registries.get( 0 ).getProperty( "type" ), "foo" );
         assertEquals( registries.get( 1 ).getName(), "ipv4_7484" );
-        assertEquals( registries.get( 1 ).getProperties().size(), 3 );
+        assertEquals( registries.get( 1 ).getProperty( "type"), "bar" );
     }
 }

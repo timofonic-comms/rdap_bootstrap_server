@@ -107,20 +107,29 @@ public abstract class RegistryChain
         ArrayList<Registry> registries = new ArrayList<Registry>();
         for ( String s : configedRegistries )
         {
-            Properties regProps = new Properties();
-            String prefix = regPropPrefix + s;
-            for ( Object key : properties.keySet() )
-            {
-                String propName = (String)key;
-                if( propName.startsWith( prefix ) )
-                {
-                    regProps.setProperty( propName, properties.getProperty( propName ) );
-                }
-            }
-            Registry r = new Registry( s, regProps );
+            String prefix = regPropPrefix + s + ".";
+            Registry r = new Registry( s, prefix, properties );
             registries.add( r );
         }
         return registries;
+    }
+
+    public static Source makeSourece( String source )
+    {
+        Source retval = null;
+        if( source == null || source.length() == 0 )
+        {
+            logger.severe( "Source is empty or null." );
+        }
+        else if( source.startsWith( "https://" ) || source.startsWith( "http://" ) )
+        {
+            // to nothing
+        }
+        else
+        {
+            retval = new FileSource();
+        }
+        return retval;
     }
 
     public static class As extends RegistryChain implements Lookup.As
@@ -251,16 +260,33 @@ public abstract class RegistryChain
     public static class Registry
     {
         private String name;
+        private String propertyPrefix;
         private Properties properties;
         private Lookup lookup;
         private Store  store;
         private Source source;
         private Format format;
 
-        public Registry( String name, Properties properties )
+        public Registry( String name, String propertyPrefix, Properties properties )
         {
             this.name = name;
+            this.propertyPrefix = propertyPrefix;
             this.properties = properties;
+        }
+
+        public String getProperty( String subPropName )
+        {
+            return properties.getProperty( propertyPrefix + subPropName );
+        }
+
+        public String getPropertyPrefix()
+        {
+            return propertyPrefix;
+        }
+
+        public void setPropertyPrefix( String propertyPrefix )
+        {
+            this.propertyPrefix = propertyPrefix;
         }
 
         public Properties getProperties()
