@@ -16,7 +16,6 @@
  */
 package net.arin.rdap_bootstrap.service;
 
-import net.arin.rdap_bootstrap.service.RegistryChain.Registry;
 import org.junit.Test;
 
 import java.util.List;
@@ -92,21 +91,4 @@ public class RegistryChainTest
         assertEquals( registries[1], "ipv4_7484" );
     }
 
-    @Test
-    public void testMakeRegistries() throws Exception
-    {
-        Properties props = new Properties();
-        props.setProperty( "arin.rdapbootstrap.registry.as_7484.type","foo" );
-        props.setProperty( "arin.rdapbootstrap.registry.as_7484.source","thing.txt" );
-        props.setProperty( "arin.rdapbootstrap.registry.ipv4_7484.type","bar" );
-        props.setProperty( "arin.rdapbootstrap.registry.ipv4_7484.source","thing.json" );
-        props.setProperty( "arin.rdapbootstrap.registry.ipv4_7484.recheck","now" );
-
-        List<Registry> registries = RegistryChain.makeRegistries( new String[]{ "as_7484", "ipv4_7484" }, props );
-        assertEquals( registries.size(), 2 );
-        assertEquals( registries.get( 0 ).getName(), "as_7484" );
-        assertEquals( registries.get( 0 ).getProperty( "type" ), "foo" );
-        assertEquals( registries.get( 1 ).getName(), "ipv4_7484" );
-        assertEquals( registries.get( 1 ).getProperty( "type"), "bar" );
-    }
 }

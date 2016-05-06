@@ -17,7 +17,6 @@ package net.arin.rdap_bootstrap.service;
 import net.arin.rdap_bootstrap.Constants;
 import net.arin.rdap_bootstrap.lookup.Lookup;
 import net.arin.rdap_bootstrap.lookup.ServiceUrls;
-import net.arin.rdap_bootstrap.lookup.Store;
 import net.ripe.ipresource.IpResource;
 
 import java.util.ArrayList;
@@ -31,15 +30,8 @@ import java.util.logging.Logger;
  */
 public abstract class RegistryChain
 {
-    public static final String AS_7484      = "as_7487";
-    public static final String IPV4_7484    = "ipv4_7484";
-    public static final String IPV6_7484    = "ipv6_7484";
-    public static final String DOMAIN_7484  = "domain_7484";
-    public static final String ENTITY_7484  = "entity_7484";
-    public static final String DEFAULT_7484 = "default_7484";
 
     private static final String rcPropPrefix  = Constants.PROPERTY_PREFIX + "registry_chain.";
-    private static final String regPropPrefix = Constants.PROPERTY_PREFIX + "registry.";
 
     protected String[] configedRegistries = null;
     protected Properties properties = null;
@@ -100,18 +92,6 @@ public abstract class RegistryChain
     public static String[] configedRegistries( String configedRegistries )
     {
         return configedRegistries.split( "(,|\\s+)" );
-    }
-
-    public static List<Registry> makeRegistries( String[] configedRegistries, Properties properties )
-    {
-        ArrayList<Registry> registries = new ArrayList<Registry>();
-        for ( String s : configedRegistries )
-        {
-            String prefix = regPropPrefix + s + ".";
-            Registry r = new Registry( s, prefix, properties );
-            registries.add( r );
-        }
-        return registries;
     }
 
     public static Source makeSourece( String source )
@@ -257,97 +237,5 @@ public abstract class RegistryChain
         }
     }
 
-    public static class Registry
-    {
-        private String name;
-        private String propertyPrefix;
-        private Properties properties;
-        private Lookup lookup;
-        private Store  store;
-        private Source source;
-        private Format format;
-
-        public Registry( String name, String propertyPrefix, Properties properties )
-        {
-            this.name = name;
-            this.propertyPrefix = propertyPrefix;
-            this.properties = properties;
-        }
-
-        public String getProperty( String subPropName )
-        {
-            return properties.getProperty( propertyPrefix + subPropName );
-        }
-
-        public String getPropertyPrefix()
-        {
-            return propertyPrefix;
-        }
-
-        public void setPropertyPrefix( String propertyPrefix )
-        {
-            this.propertyPrefix = propertyPrefix;
-        }
-
-        public Properties getProperties()
-        {
-            return properties;
-        }
-
-        public void setProperties( Properties properties )
-        {
-            this.properties = properties;
-        }
-
-        public Lookup getLookup()
-        {
-            return lookup;
-        }
-
-        public void setLookup( Lookup lookup )
-        {
-            this.lookup = lookup;
-        }
-
-        public Store getStore()
-        {
-            return store;
-        }
-
-        public void setStore( Store store )
-        {
-            this.store = store;
-        }
-
-        public Source getSource()
-        {
-            return source;
-        }
-
-        public void setSource( Source source )
-        {
-            this.source = source;
-        }
-
-        public Format getFormat()
-        {
-            return format;
-        }
-
-        public void setFormat( Format format )
-        {
-            this.format = format;
-        }
-
-        public String getName()
-        {
-            return name;
-        }
-
-        public void setName( String name )
-        {
-            this.name = name;
-        }
-    }
 }
 
