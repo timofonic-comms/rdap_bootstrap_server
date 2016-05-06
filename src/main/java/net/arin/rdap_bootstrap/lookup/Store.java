@@ -21,40 +21,37 @@ import net.ripe.ipresource.IpResource;
 /**
  * Defines the interfaces for storing data.
  */
-public interface Store
+public interface Store<T>
 {
-    interface Load<T>
-    {
-        T createLoadContext();
-        void loadWithContext( T t, boolean success);
-    }
+    T createLoadContext();
+    void loadWithContext( T t, boolean success);
 
-    interface As extends Store, Load<As>
+    interface As extends Store<As>
     {
         void store( IpResource ipResource, ServiceUrls serviceUrls );
     }
 
-    interface Domain extends Store, Load<Domain>
+    interface Domain extends Store<Domain>
     {
         void store( String domain, ServiceUrls serviceUrls );
     }
 
-    interface Entity extends Store, Load<Entity>
+    interface Entity extends Store<Entity>
     {
         void store( String entity, ServiceUrls serviceUrls );
     }
 
-    interface IpV4 extends Store, Load<IpV4>
+    interface IpV4 extends Store<IpV4>
     {
         void store( IpResource ipResource, ServiceUrls serviceUrls );
     }
 
-    interface IpV6 extends Store, Load<IpV6>
+    interface IpV6 extends Store<IpV6>
     {
         void store( IpResource ipResource, ServiceUrls serviceUrls );
     }
 
-    interface Default extends Store, Load<Default>
+    interface Default extends Store<Default>
     {
         void store( Type type, ServiceUrls serviceUrls );
     }
