@@ -23,11 +23,6 @@ import net.arin.rdap_bootstrap.lookup.Store;
 public interface Source
 {
     /*
-     * Instructs the source to configure itself.
-     */
-    void config( String registryName );
-
-    /*
      * Sets the pace where the values of the source are to be set.
      */
     void setStore( Store store );

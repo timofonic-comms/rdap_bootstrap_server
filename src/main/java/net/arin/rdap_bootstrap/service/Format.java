@@ -24,6 +24,5 @@ import java.io.InputStream;
  */
 public interface Format
 {
-    void config( String registryName );
     void loadData( InputStream inputStream, Store store );
 }

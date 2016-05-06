@@ -26,12 +26,6 @@ public class FileSource implements Source
     private Format format;
 
     @Override
-    public void config( String registryName )
-    {
-
-    }
-
-    @Override
     public void setStore( Store store )
     {
         this.store = store;
