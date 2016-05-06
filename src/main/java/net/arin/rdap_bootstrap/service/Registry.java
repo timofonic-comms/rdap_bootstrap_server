@@ -15,6 +15,7 @@
 package net.arin.rdap_bootstrap.service;
 
 import net.arin.rdap_bootstrap.Constants;
+import net.arin.rdap_bootstrap.format.Format;
 import net.arin.rdap_bootstrap.lookup.AsEMap;
 import net.arin.rdap_bootstrap.lookup.DefaultHashMap;
 import net.arin.rdap_bootstrap.lookup.DomainHashMap;
@@ -23,8 +24,8 @@ import net.arin.rdap_bootstrap.lookup.IpV4EMap;
 import net.arin.rdap_bootstrap.lookup.IpV6EMap;
 import net.arin.rdap_bootstrap.lookup.Lookup;
 import net.arin.rdap_bootstrap.lookup.Store;
+import net.arin.rdap_bootstrap.source.Source;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;

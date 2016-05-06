@@ -17,6 +17,8 @@ package net.arin.rdap_bootstrap.service;
 import net.arin.rdap_bootstrap.Constants;
 import net.arin.rdap_bootstrap.lookup.Lookup;
 import net.arin.rdap_bootstrap.lookup.ServiceUrls;
+import net.arin.rdap_bootstrap.source.FileSource;
+import net.arin.rdap_bootstrap.source.Source;
 import net.ripe.ipresource.IpResource;
 
 import java.util.ArrayList;

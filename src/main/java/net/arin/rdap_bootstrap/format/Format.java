@@ -13,33 +13,16 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-package net.arin.rdap_bootstrap.service;
+package net.arin.rdap_bootstrap.format;
 
 import net.arin.rdap_bootstrap.lookup.Store;
 
+import java.io.InputStream;
+
 /**
- * A source type for a file on disk
+ * Defines the behavior for a registry format
  */
-public class FileSource implements Source
+public interface Format
 {
-    private Store store;
-    private Format format;
-
-    @Override
-    public void setStore( Store store )
-    {
-        this.store = store;
-    }
-
-    @Override
-    public void setFormat( Format format )
-    {
-        this.format = format;
-    }
-
-    @Override
-    public void execute()
-    {
-
-    }
+    void loadData( InputStream inputStream, Store store );
 }

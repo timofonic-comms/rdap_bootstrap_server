@@ -16,12 +16,11 @@
  */
 package net.arin.rdap_bootstrap.service;
 
+import net.arin.rdap_bootstrap.format.Rfc7484;
 import net.arin.rdap_bootstrap.lookup.DomainHashMap;
 import net.arin.rdap_bootstrap.lookup.Lookup.Domain;
 import net.arin.rdap_bootstrap.lookup.ServiceUrls;
 import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
-
-import java.util.HashMap;
 
 /**
  * @version $Rev$, $Date$

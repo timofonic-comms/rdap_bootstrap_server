@@ -16,14 +16,6 @@
  */
 package net.arin.rdap_bootstrap.lookup;
 
-import net.arin.rdap_bootstrap.lookup.Lookup;
-import net.arin.rdap_bootstrap.lookup.Store;
-import net.arin.rdap_bootstrap.lookup.Store.Entity;
-import net.arin.rdap_bootstrap.service.Bootstrap;
-import net.arin.rdap_bootstrap.service.ResourceFiles;
-import net.arin.rdap_bootstrap.service.ResourceFiles.BootFiles;
-import net.arin.rdap_bootstrap.service.Rfc7484;
-
 import java.util.HashMap;
 
 /**

@@ -13,16 +13,31 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-package net.arin.rdap_bootstrap.service;
+package net.arin.rdap_bootstrap.source;
 
 import net.arin.rdap_bootstrap.lookup.Store;
-
-import java.io.InputStream;
+import net.arin.rdap_bootstrap.format.Format;
 
 /**
- * Defines the behavior for a registry format
+ * Defines the behavior for a registry source
  */
-public interface Format
+public interface Source
 {
-    void loadData( InputStream inputStream, Store store );
+    /*
+     * Sets the pace where the values of the source are to be set.
+     */
+    void setStore( Store store );
+
+    /*
+     * Sets the format of the source
+     */
+    void setFormat( Format format );
+
+    /*
+     * Instructs the source to do what is necessary to load data into the store using the format.
+     * Will only be called after the other methods have been called.
+     * It is also assumed that if the source is to be regularly checked, this method will
+     * initiate any background tasks.
+     */
+    void execute();
 }

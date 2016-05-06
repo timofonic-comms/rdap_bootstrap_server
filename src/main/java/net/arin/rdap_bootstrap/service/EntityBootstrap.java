@@ -16,6 +16,7 @@
  */
 package net.arin.rdap_bootstrap.service;
 
+import net.arin.rdap_bootstrap.format.Rfc7484;
 import net.arin.rdap_bootstrap.lookup.EntityHashMap;
 import net.arin.rdap_bootstrap.lookup.Lookup.Entity;
 import net.arin.rdap_bootstrap.lookup.ServiceUrls;
