@@ -21,6 +21,12 @@ import net.arin.rdap_bootstrap.lookup.Store;
 import net.arin.rdap_bootstrap.service.Registry;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Logger;
 
 /**
  * A source type for a file on disk
@@ -28,7 +34,11 @@ import java.io.File;
 public class FileSource implements Source
 {
     private Registry registry;
-    File dataFile;
+    private File dataFile;
+    private Timer timer;
+    private long recheckMillis;
+
+    private static Logger logger = Logger.getLogger( "FileSource" );
 
     @Override
     public void configFromRegistry( Registry registry )
@@ -58,11 +68,75 @@ public class FileSource implements Source
         {
             throw new RuntimeException( "'" + dataFileName + "' is not readable."  );
         }
+        String s = registry.getProperty( "recheck" );
+        recheckMillis = Long.parseLong( s );
     }
 
     @Override
     public void execute( boolean background )
     {
+        if( !background )
+        {
+            loadData();
+        }
+        else
+        {
+            if( timer != null )
+            {
+                timer = new Timer();
+                timer.schedule( new RecheckTask(), recheckMillis, recheckMillis );
+            }
+            // else it was already setup to run
+        }
+    }
 
+    private void loadData()
+    {
+        try
+        {
+            InputStream in = new FileInputStream( dataFile );
+            registry.getFormat().loadData( in, registry.getStore() );
+        }
+        catch ( FileNotFoundException e )
+        {
+            throw new RuntimeException( e );
+        }
+    }
+
+    private class RecheckTask extends TimerTask
+    {
+        private boolean isModified( long currentTime, long lastModified )
+        {
+            if ( ( currentTime - recheckMillis ) < lastModified )
+            {
+                return true;
+            }
+            // else
+            return false;
+        }
+
+        @Override
+        public void run()
+        {
+            boolean load = false;
+            long currentTime = System.currentTimeMillis();
+            if( isModified( currentTime, dataFile.lastModified() ) )
+            {
+                load = true;
+            }
+            if ( load )
+            {
+                try
+                {
+                    loadData();
+                }
+                catch ( Exception e )
+                {
+                    logger.severe(
+                        "Problem loading source for registry '" + registry.getName() + "': " + e
+                            .getMessage() );
+                }
+            }
+        }
     }
 }
