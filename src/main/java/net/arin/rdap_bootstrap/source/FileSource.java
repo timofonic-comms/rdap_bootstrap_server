@@ -44,7 +44,11 @@ public class FileSource implements Source
     public void configFromRegistry( Registry registry )
     {
         this.registry = registry;
-        String dirName = registry.getProperty( Constants.DATA_DIR_PROP_NAME );
+        String dirName = registry.getProperties().getProperty( Constants.DATA_DIR_PROP_NAME );
+        if( dirName == null || dirName.isEmpty() )
+        {
+            throw new RuntimeException( "Property for data directory does not exist" );
+        }
         File dataDirectory = new File( dirName );
         if( !dataDirectory.exists() )
         {
@@ -75,12 +79,12 @@ public class FileSource implements Source
     @Override
     public void execute( boolean background )
     {
-        if( !background )
+        // if not backgrounding, just load the data.
+        // even if backgrounding, do the initial load in the foreground
+        loadData();
+        if( background )
         {
-            loadData();
-        }
-        else
-        {
+            // now schedule it to be read in the background
             if( timer != null )
             {
                 timer = new Timer();

@@ -139,7 +139,12 @@ public class Registry
 
     public String getProperty( String subPropName )
     {
-        return properties.getProperty( propertyPrefix + subPropName );
+        String retval = properties.getProperty( propertyPrefix + subPropName );
+        if( retval == null || retval.isEmpty() )
+        {
+            throw new RuntimeException( "Property '" + propertyPrefix + subPropName + "' not found." );
+        }
+        return retval;
     }
 
     public String getPropertyPrefix()

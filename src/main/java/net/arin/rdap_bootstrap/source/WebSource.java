@@ -49,7 +49,11 @@ public class WebSource implements Source
     public void configFromRegistry( Registry registry )
     {
         this.registry = registry;
-        String dirName = registry.getProperty( Constants.DATA_DIR_PROP_NAME );
+        String dirName = registry.getProperties().getProperty( Constants.DATA_DIR_PROP_NAME );
+        if( dirName == null || dirName.isEmpty() )
+        {
+            throw new RuntimeException( "Property for data directory does not exist" );
+        }
         File dataDirectory = new File( dirName );
         if( !dataDirectory.exists() )
         {
