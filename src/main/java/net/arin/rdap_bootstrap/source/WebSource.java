@@ -17,16 +17,24 @@ package net.arin.rdap_bootstrap.source;
 
 import net.arin.rdap_bootstrap.Constants;
 import net.arin.rdap_bootstrap.service.Registry;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Logger;
@@ -37,11 +45,14 @@ import java.util.logging.Logger;
 public class WebSource implements Source
 {
     private Registry registry;
-    private File dataFile;
+    private Path dataFile;
     private URL url;
     private Timer timer;
     private long refetchMillis;
     private boolean initialRun = false;
+
+    private CloseableHttpClient httpClient;
+    private HttpGet httpGet;
 
     private static Logger logger = Logger.getLogger( "WebSource" );
 
@@ -54,29 +65,41 @@ public class WebSource implements Source
         {
             throw new RuntimeException( "Property for data directory does not exist" );
         }
-        File dataDirectory = new File( dirName );
-        if( !dataDirectory.exists() )
+        Path dataDirectory = Paths.get( dirName );
+        if( !Files.exists( dataDirectory ) )
         {
             throw new RuntimeException( "'" + dirName + "' does not exist."  );
         }
-        if( !dataDirectory.isDirectory() )
+        if( !Files.isDirectory( dataDirectory ) )
         {
             throw new RuntimeException( "'" + dirName + "' is not a directory."  );
         }
         try
         {
             url = new URL( registry.getProperty( Constants.SOURCE_SUBPROPNAME ) );
+            httpGet = new HttpGet( url.toURI() );
+            httpClient = HttpClients.createDefault();
         }
-        catch ( MalformedURLException e )
+        catch ( MalformedURLException | URISyntaxException e )
         {
             throw new RuntimeException( e );
         }
         String dataFileName = url.getFile();
         String s[] = dataFileName.split( File.pathSeparator );
         dataFileName = s[ s.length - 1 ];
-        dataFile = new File( dataDirectory, dataFileName );
+        dataFile = Paths.get( dataDirectory.toString(), dataFileName );
         String s2 = registry.getProperty( "refetch" );
         refetchMillis = Long.parseLong( s2 );
+    }
+
+    void setHttpClient( CloseableHttpClient httpClient )
+    {
+        this.httpClient = httpClient;
+    }
+
+    void setHttpGet( HttpGet httpGet )
+    {
+        this.httpGet = httpGet;
     }
 
     @Override
@@ -101,31 +124,49 @@ public class WebSource implements Source
     {
         try
         {
+            // On the initial run, load the data that we have locally if we have it.
             if( !initialRun )
             {
-                if( dataFile.exists() )
+                if( Files.exists( dataFile ) )
                 {
-                    InputStream in = new FileInputStream( dataFile );
+                    InputStream in = Files.newInputStream( dataFile );
                     registry.getFormat().loadData( in, registry.getStore() );
                 }
                 initialRun = true;
             }
             else
             {
-                File tmp = File.createTempFile( registry.getName(), "tmp" );
-                ReadableByteChannel read = Channels.newChannel( url.openStream() );
-                FileOutputStream out = new FileOutputStream( tmp );
-                out.getChannel().transferFrom( read, 0L, Long.MAX_VALUE );
-                out.close();
-                InputStream in = new FileInputStream( tmp );
-                registry.getFormat().loadData( in, registry.getStore() );
-                // assuming we got this far, let's copy the file from the tmp spot
-                FileInputStream fin = new FileInputStream( tmp );
-                read = Channels.newChannel( fin );
-                out = new FileOutputStream( dataFile );
-                out.getChannel().transferFrom( read, 0L, Long.MAX_VALUE );
-                out.close();
-                fin.close();
+                //find a temporary place to put the data
+                //do not overwrite what we already have
+                Path tmp = Files.createTempFile( registry.getName(), "tmp" );
+
+                //download from web
+                CloseableHttpResponse httpResponse = httpClient.execute( httpGet );
+                int statusCode = httpResponse.getStatusLine().getStatusCode();
+                if( statusCode != HttpStatus.SC_OK )
+                {
+                    logger.warning( "cannot download source: status " + statusCode + " for " + url.toString() );
+                }
+                else
+                {
+                    OutputStream out = Files.newOutputStream( tmp );
+                    HttpEntity httpEntity = httpResponse.getEntity();
+                    if( httpEntity != null )
+                    {
+                        httpEntity.writeTo( out );
+                    }
+                    else
+                    {
+                        logger.warning( "no entity provided in response for " + url.toString() );
+                    }
+                    out.close();
+                    InputStream in = Files.newInputStream( tmp );
+                    registry.getFormat().loadData( in, registry.getStore() );
+                    in.close();
+
+                    // assuming we got this far, let's move the file from the tmp spot
+                    Files.move( tmp, dataFile, StandardCopyOption.REPLACE_EXISTING );
+                }
             }
         }
         catch ( IOException e )
