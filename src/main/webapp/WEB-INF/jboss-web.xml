@@ -2,5 +2,5 @@
     <!--
     ~ Copyright (c) 2013. American Registry for Internet Numbers
     -->
-    <context-root>rdapbootstrap</context-root>
+    <context-root>bootstrap</context-root>
 </jboss-web>
