@@ -44,6 +44,10 @@ public class AsBootstrapTest
         assertEquals( "http://rdap.afrinic.net/rdap", asBootstrap.getServiceUrls( "11569" ).getHttpUrl() );
         assertEquals( "https://rdap.apnic.net", asBootstrap.getServiceUrls( "17408" ).getHttpsUrl() );
         assertEquals( "https://rdap.apnic.net", asBootstrap.getServiceUrls( "18431" ).getHttpsUrl() );
+        
+        assertEquals( "https://rdap.registro.br", asBootstrap.getServiceUrls( "265007" ).getHttpsUrl() );
+        assertEquals( "https://rdap.registro.br", asBootstrap.getServiceUrls( "23202" ).getHttpsUrl() );
+        
         assertNull( asBootstrap.getServiceUrls( "4294967294" ) );
     }
 
